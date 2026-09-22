@@ -37,7 +37,7 @@ GitHub repository link: https://github.com/ST10448358/CampusFind.git
 
 YouTube demonstration video link: YOUR_YOUTUBE_VIDEO_LINK
 
-##Admin login details
+## Admin login details
 Admin Email: admin@campus.ac.za
 Admin Password: AdminPassword123!
 
