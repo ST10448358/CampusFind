@@ -24,7 +24,7 @@ The app uses Firebase as its backend service and Cloud Firestore as its database
 ## Project Links
 
 <p align="center">
-  <a href="(https://github.com/ST10448358/CampusFind.git)">
+  <a href="https://github.com/ST10448358/CampusFind.git">
     <img src="https://img.shields.io/badge/View%20Code-GitHub-black?style=for-the-badge&logo=github"><br>
   </a>
 
