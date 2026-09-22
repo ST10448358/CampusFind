@@ -3,11 +3,11 @@
 <h3 align="center"> Campus Lost and Found App</h3>
 
 <p align="center">
-  OPSC6312 Part 2 <br>
+  
   Find it. Report it. Reunite it.
 </p>
 
----
+
 
 ## About the App
 
