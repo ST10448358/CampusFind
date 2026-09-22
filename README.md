@@ -18,7 +18,6 @@ CampusFind is designed to include a search feature that allows users to search f
 
 The app uses Firebase as its backend service and Cloud Firestore as its database for storing application data.
 
----
 
 ## Project Links
 
@@ -38,7 +37,7 @@ GitHub repository link: https://github.com/ST10448358/CampusFind.git
 
 YouTube demonstration video link: YOUR_YOUTUBE_VIDEO_LINK
 
----
+
 
 ## Design Considerations
 
@@ -52,7 +51,7 @@ Firebase was selected as the backend service because it provides authentication 
 
 The design also considers the future implementation of additional functionality, including offline support, real-time notifications, and multi-language support.
 
----
+
 
 ## Key Features
 
@@ -67,7 +66,7 @@ The design also considers the future implementation of additional functionality,
 
 
 
----
+
 
 ## Technologies Used
 
@@ -80,7 +79,7 @@ The design also considers the future implementation of additional functionality,
 - **Continuous Integration:** GitHub Actions
 - **Testing:** Android Instrumented Tests
 
----
+
 
 
 
@@ -92,7 +91,6 @@ Git enables the development team to track changes made to the application, while
 
 GitHub also supports project organisation and collaboration by providing a shared location for the development team to access the application source code. This helps maintain an organised development process and provides a record of changes made during the project.
 
----
 
 ## GitHub Actions
 
@@ -109,13 +107,14 @@ Android instrumented tests are used to test application functionality on an Andr
 
 The specific build and testing steps performed by GitHub Actions depend on the configured workflow file. Additional workflow steps can be added as the project develops.
 
----
+
 
 
 ## Additional Documentation
 ## API Documentation
 
 For a detailed explanation of the APIs used in CampusFind, including their purposes, key components, and code examples, view the documentation below.
+
 [View API Documentation](API_DOCUMENTATION.md)
 
 
