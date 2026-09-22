@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CampusFindApp</string>
+    <!-- Replace 'YOUR_GOOGLE_MAPS_API_KEY_HERE' with your real key from Google Cloud Console -->
+    <string name="google_maps_key">AIzaSyDUyHMX4LRgyGKc--lHxKdHTjCOiPT5DhU</string>
+</resources>

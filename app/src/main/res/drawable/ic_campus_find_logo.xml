@@ -1,0 +1,75 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Outer Circular Navy Ring -->
+    <path
+        android:fillColor="#1B2234"
+        android:pathData="M100,10 C50.3,10 10,50.3 10,100 C10,128.5 24.5,153.6 46.8,168.6 C43.2,160.5 41.2,151.5 41.2,142 C41.2,109.5 67.5,83.2 100,83.2 C132.5,83.2 158.8,109.5 158.8,142 C158.8,151.5 156.8,160.5 153.2,168.6 C175.5,153.6 190,128.5 190,100 C190,50.3 149.7,10 100,10 Z M100,172 C58.6,172 25,138.4 25,97 C25,55.6 58.6,22 100,22 C141.4,22 175,55.6 175,97 C175,138.4 141.4,172 100,172 Z" />
+
+    <!-- Backpack - Main Body (Navy Blue) -->
+    <path
+        android:fillColor="#1B2234"
+        android:pathData="M100,38 C80,38 65,54 65,76 L65,115 C65,123.8 72.2,131 81,131 L119,131 C127.8,131 135,123.8 135,115 L135,76 C135,54 120,38 100,38 Z" />
+
+    <!-- Backpack Top Handle Loop (Navy Blue) -->
+    <path
+        android:strokeColor="#1B2234"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M88,40 C88,30 112,30 112,40" />
+
+    <!-- Backpack Front Zipper Pocket (White outline on Navy Body) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.5"
+        android:fillColor="#1B2234"
+        android:pathData="M73,88 L127,88 C131.4,88 135,91.6 135,96 L135,115 C135,121.6 129.6,127 123,127 L77,127 C70.4,127 65,121.6 65,115 L65,96 C65,91.6 68.6,88 73,88 Z" />
+
+    <!-- Pocket Zipper Line & Pull (White) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M73,97 L127,97" />
+
+    <!-- Zipper Pull Dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M118,97 A2.5,2.5 0 1,1 117.9,97 Z" />
+
+    <!-- Attached Tag String (Navy Blue) -->
+    <path
+        android:strokeColor="#1B2234"
+        android:strokeWidth="3.5"
+        android:fillColor="#00000000"
+        android:pathData="M115,58 C130,62 140,70 148,78" />
+
+    <!-- Attached Tag (Teal/Green #3BA092) -->
+    <path
+        android:fillColor="#3BA092"
+        android:pathData="M142,75 L158,80 L170,110 L150,118 L138,88 Z" />
+
+    <!-- Tag Eyelet Hole (White) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M149,83 A3,3 0 1,1 148.9,83 Z" />
+
+    <!-- Cupped Supportive Hand (Teal/Green #3BA092) holding the emblem -->
+    <path
+        android:fillColor="#3BA092"
+        android:pathData="M40,132 C40,132 50,120 78,122 C106,124 135,142 165,130 C165,130 150,158 115,165 C80,172 45,160 40,132 Z" />
+
+    <!-- Hand Palm Detail Line (White) -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M78,150 C95,152 112,148 128,142" />
+
+</vector>
