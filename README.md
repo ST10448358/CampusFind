@@ -110,7 +110,7 @@ The specific build and testing steps performed by GitHub Actions depend on the c
 
 
 
-## Additional Documentation
+
 ## API Documentation
 
 For a detailed explanation of the APIs used in CampusFind, including their purposes, key components, and code examples, view the documentation below.
