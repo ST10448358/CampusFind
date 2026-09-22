@@ -26,7 +26,7 @@ The app uses Firebase as its backend service and Cloud Firestore as its database
     <img src="https://img.shields.io/badge/View%20Code-GitHub-black?style=for-the-badge&logo=github"><br>
   </a>
 
-  <a href="YOUR_YOUTUBE_VIDEO_LINK">
+  <a href="https://youtu.be/7yo8v9-c3qo">
     <img src="https://img.shields.io/badge/Watch%20Demo-YouTube-red?style=for-the-badge&logo=youtube">
   </a>
 </p>
@@ -35,7 +35,7 @@ Click here if icon is not working:
 
 GitHub repository link: https://github.com/ST10448358/CampusFind.git
 
-YouTube demonstration video link: YOUR_YOUTUBE_VIDEO_LINK
+YouTube demonstration video link: https://youtu.be/7yo8v9-c3qo
 
 ## Admin login details
 Admin Email: admin@campus.ac.za <br>
