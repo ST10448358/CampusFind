@@ -35,7 +35,7 @@ Click here if icon is not working:
 
 GitHub repository link: https://github.com/ST10448358/CampusFind.git
 
-Google Drive demonstration video link: [https://youtu.be/Nq2XY2DnnUo](https://drive.google.com/file/d/1v0jfaOt8W5tPXPz1GovtE_w3R5_Zg0-b/view?usp=share_link)
+Google Drive demonstration video link: https://drive.google.com/file/d/1v0jfaOt8W5tPXPz1GovtE_w3R5_Zg0-b/view?usp=share_link
 
 ## Admin login details
 Admin Email: admin@campus.ac.za <br>
