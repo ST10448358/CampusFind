@@ -26,7 +26,7 @@ The app uses Firebase as its backend service and Cloud Firestore as its database
     <img src="https://img.shields.io/badge/View%20Code-GitHub-black?style=for-the-badge&logo=github"><br>
   </a>
 
-  <a href="[https://youtu.be/Nq2XY2DnnUo](https://drive.google.com/file/d/1v0jfaOt8W5tPXPz1GovtE_w3R5_Zg0-b/view?usp=share_link)">
+  <a href="https://drive.google.com/file/d/1v0jfaOt8W5tPXPz1GovtE_w3R5_Zg0-b/view?usp=share_link">
     <img src="https://img.shields.io/badge/Watch%20Demo-Google Drive-red?style=for-the-badge&logo=youtube">
   </a>
 </p>
