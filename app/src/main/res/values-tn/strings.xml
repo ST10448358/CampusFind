@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusFind</string>
+    <string name="tagline">Bona se o se latlhegetsweng. Busetsa se o se boneng.</string>
+    <string name="google_maps_key">AIzaSyDUyHMX4LRgyGKc--lHxKdHTjCOiPT5DhU</string>
+
+    <string name="upload_photo">Tsenya kgotsa Tseya Senepe</string>
+    <string name="lost_reports">Dilo tse di latlhegileng</string>
+    <string name="found_reports">Dilo tse di bonweng</string>
+    <string name="items_returned">Dilo tse di busitsweng</string>
+    <string name="section_account">AKHAUNTE</string>
+    <string name="edit_profile">Fetola Profile</string>
+    <string name="change_password">Fetola Lentswe la Phetogo</string>
+    <string name="section_notifications">DITSEBISO</string>
+    <string name="push_notif">Ditsebiso tsa Push</string>
+    <string name="match_alerts">Ditsebiso tsa Tekanyo</string>
+    <string name="report_updates">Dihlaziso tsa Dipego</string>
+    <string name="section_language">PUO</string>
+    <string name="sa_languages">DIPUO TSA SA</string>
+    <string name="lang_english">English (Default)</string>
+    <string name="lang_setswana">Setswana</string>
+    <string name="lang_isizulu">isiZulu</string>
+    <string name="batswana">Batswana</string>
+    <string name="amazulu">AmaZulu</string>
+    <string name="section_app_preferences">DIKGETHO TSA APPS</string>
+    <string name="dark_mode">Mokgwa o o Lefifi</string>
+    <string name="dark_mode_active">Mokgwa o o lefifi o dirisiwa</string>
+    <string name="network_connectivity">Kgokagano ya Marangrang</string>
+    <string name="network_connected">E kgokagane le Campus REST API.</string>
+    <string name="online">• E mo Marangrang</string>
+    <string name="section_privacy">SEPHIRI LE TSHIRELETSO</string>
+    <string name="privacy_policy">Molao wa Sephiri</string>
+    <string name="terms_use">Melao ya Tiriso</string>
+    <string name="help_support">Thuso &amp; Tshegetso</string>
+    <string name="log_out">Tswa</string>
+    <string name="app_version">CampusFind v1.0.0</string>
+
+    <string name="get_started">Simolola</string>
+    <string name="log_in">Tsena</string>
+    <string name="login_title">O amogeleswe gape</string>
+    <string name="login_subtitle">Tsena moakhaunteng ya gago</string>
+    <string name="email_hint">Aterese ya imeile</string>
+    <string name="password_hint">Lentswe la phetogo</string>
+    <string name="forgot_password">Lebetse lentswe la phetogo?</string>
+    <string name="login_btn">Tsena</string>
+    <string name="or_divider">KGOTSA</string>
+    <string name="google_signin">Tswelela ka Google</string>
+    <string name="admin_quick_login">Tsena ka bonako jaaka Admin</string>
+    <string name="no_account_prefix">Ga o na akaunte? </string>
+    <string name="register_link">Kwadisa Fano</string>
+
+    <string name="register_title">BOPA AKAUNTE</string>
+    <string name="register_subtitle">Tsenelela CampusFind</string>
+    <string name="first_name">Leina la ntlha</string>
+    <string name="last_name">Fane</string>
+    <string name="institution">Setheo / Yunibesithi</string>
+    <string name="student_number">Nomoro ya moithuti / mabatli</string>
+    <string name="confirm_password">Netefatsa lentswe la phetogo</string>
+    <string name="terms_checkbox">Ke dumalana le Melao</string>
+    <string name="register_btn">Bopa Akaunte</string>
+    <string name="already_account">O na le akaunte? </string>
+
+    <string name="greeting">DUMELA,</string>
+    <string name="search_hint">Batla dilo tse di latlhegileng...</string>
+    <string name="report_lost">Pega Sedilo</string>
+    <string name="report_lost_sub">Ke latlhegetswe ke sengwe</string>
+    <string name="report_found">Pega Bonweng</string>
+    <string name="report_found_sub">Ke bone sengwe</string>
+    <string name="recent_reports">• Diteko tsa Bosheng</string>
+    <string name="see_all">Bona Tsotlhe &gt;</string>
+    <string name="no_reports">Ga go dipego di di bonweng.</string>
+    <string name="light_mode">Lesedi</string>
+    <string name="security_banner">O tlhoka tlhahlobo ya tshireletso?\nEtela Lefelo la Tshireletso.</string>
+
+    <string name="search_screen_title">Batla le go Sekaseka Dipego</string>
+    <string name="search_input_hint">Tlola setlhogo, karolo, setheo...</string>
+    <string name="tab_lost_items">Dilo tse di Latlhegileng</string>
+    <string name="tab_found_items">Dilo tse di Bonweng</string>
+    <string name="search_empty">Ga go dipego tse di tsamaelanang le dipego.</string>
+
+    <string name="my_reports_title">Dipego Tsa Me</string>
+    <string name="my_reports_sub">Latedisa dilo tse o di pegileng</string>
+    <string name="tab_all">Tsotlhe</string>
+    <string name="tab_lost">Latlhegileng</string>
+    <string name="tab_found">Bonweng</string>
+    <string name="tab_claimed">Tserewe</string>
+    <string name="no_my_reports">Ga o ise o pegu dipego dipe.</string>
+    <string name="my_reports_heading">Dipego Tsa Me Tse di Pegileng</string>
+    <string name="my_reports_desc">Latedisa le go laola dilo tse o di latlhegetsweng kgotsa tsa di bonweng</string>
+    <string name="tab_claimed_items">Tserewe</string>
+
+    <string name="notifications_title">Ditsebiso Tsa Khamphase</string>
+    <string name="notifications_sub">Dihlaziso ka nako ya nnete</string>
+    <string name="no_notifications">Ga go ditsebiso.</string>
+    <string name="alerts_screen_title">Ditsebiso &amp; Dihlaziso tsa Tekanyo</string>
+    <string name="alerts_screen_desc">Ditsebiso fa dilo tse di latlhegileng di tshwanana le tse di bonweng</string>
+    <string name="no_alerts_title">Ga go ditsebiso tsa tsona gone jaanong</string>
+    <string name="no_alerts_desc">Fa sedilo se se latlhegileng se tshwanana le pego, o tla itsisiwe fano ka bonako.</string>
+
+    <string name="admin_title">Lefelo la Tshireletso ya Admin</string>
+    <string name="total_reports">Dipego Tsotlhe</string>
+    <string name="pending_matches">Tekanyo e e Letetsweng</string>
+    <string name="claimed_items">Tserewe</string>
+    <string name="admin_logout">Tswa ga Admin</string>
+
+    <string name="report_item_title">Romela Pego ya Sedilo</string>
+    <string name="report_type_lost">Sedilo se se Latlhegileng</string>
+    <string name="report_type_found">Sedilo se se Bonweng</string>
+    <string name="item_title">Leina la Sedilo / Setlhogo *</string>
+    <string name="item_desc">Tlhaloso e e Tletseng *</string>
+    <string name="category">Karolo *</string>
+    <string name="location">Lefelo *</string>
+    <string name="specific_location">Tlhaloso ya Kamore / Kago</string>
+    <string name="secret_question">Potso ya Sephiri</string>
+    <string name="submit_report">Romela Pego</string>
+    <string name="item_name_hint">Leina la Sedilo / Setlhogo *</string>
+    <string name="category_hint">Karolo *</string>
+    <string name="institution_hint">Setheo / Khamphase *</string>
+    <string name="general_location_hint">Lefelo *</string>
+    <string name="specific_location_hint">Tlhaloso ya Kamore / Kago</string>
+    <string name="detailed_desc_hint">Tlhaloso e e Tletseng *</string>
+    <string name="secret_id_hint">Potso ya Sephiri</string>
+    <string name="item_photo_label">Senepe sa Sedilo (Boikgethelo)</string>
+    <string name="tap_photo_prompt">Tobetsa go kgetha kgotsa go tsaya senepe</string>
+    <string name="map_heading">Tlhomaka Lefelo mo Mebeng</string>
+</resources>

@@ -1,5 +1,137 @@
 <resources>
     <string name="app_name">CampusFindApp</string>
+    <string name="tagline">Find what you lost. Return what you found.</string>
     <!-- Replace 'YOUR_GOOGLE_MAPS_API_KEY_HERE' with your real key from Google Cloud Console -->
     <string name="google_maps_key">AIzaSyDUyHMX4LRgyGKc--lHxKdHTjCOiPT5DhU</string>
+
+    <!-- Profile & Common -->
+    <string name="upload_photo">Upload or Take Photo</string>
+    <string name="lost_reports">Lost reports</string>
+    <string name="found_reports">Found reports</string>
+    <string name="items_returned">Items returned</string>
+    <string name="section_account">ACCOUNT</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="section_notifications">NOTIFICATIONS</string>
+    <string name="push_notif">Push Notifications</string>
+    <string name="match_alerts">Possible Match Alerts</string>
+    <string name="report_updates">Report Updates</string>
+    <string name="section_language">LANGUAGE</string>
+    <string name="sa_languages">SA LANGUAGES</string>
+    <string name="lang_english">English (Default)</string>
+    <string name="lang_setswana">Setswana</string>
+    <string name="lang_isizulu">isiZulu</string>
+    <string name="batswana">Batswana</string>
+    <string name="amazulu">AmaZulu</string>
+    <string name="section_app_preferences">APP PREFERENCES</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_active">Dark theme active</string>
+    <string name="network_connectivity">Network Connectivity</string>
+    <string name="network_connected">Connected. Automatic synchronization with Campus REST API enabled.</string>
+    <string name="online">• Online</string>
+    <string name="section_privacy">PRIVACY &amp; SECURITY</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_use">Terms of Use</string>
+    <string name="help_support">Help &amp; Campus Support</string>
+    <string name="log_out">Log Out</string>
+    <string name="app_version">CampusFind v1.0.0</string>
+
+    <!-- Opening Screen -->
+    <string name="get_started">Get Started</string>
+    <string name="log_in">Log In</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Log in to CampusFind</string>
+    <string name="email_hint">Campus Email Address</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login_btn">Log In</string>
+    <string name="or_divider">OR</string>
+    <string name="google_signin">Continue with Google</string>
+    <string name="admin_quick_login">Quick Admin Sign-In</string>
+    <string name="no_account_prefix">Don\'t have an account? </string>
+    <string name="register_link">Register Here</string>
+
+    <!-- Register Screen -->
+    <string name="register_title">CREATE AN ACCOUNT</string>
+    <string name="register_subtitle">Join CampusFind</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="institution">University / Institution</string>
+    <string name="student_number">Student / Staff Number</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_checkbox">I agree to the Campus Security &amp; Privacy Policy</string>
+    <string name="register_btn">Create Account</string>
+    <string name="already_account">Already have an account? </string>
+
+    <!-- Home Screen -->
+    <string name="greeting">HELLO,</string>
+    <string name="search_hint">Search lost &amp; found items...</string>
+    <string name="report_lost">Report Lost</string>
+    <string name="report_lost_sub">I lost something</string>
+    <string name="report_found">Report Found</string>
+    <string name="report_found_sub">I found something</string>
+    <string name="recent_reports">• Recent Activity</string>
+    <string name="see_all">See all &gt;</string>
+    <string name="no_reports">No reports match your search query</string>
+    <string name="light_mode">Light</string>
+    <string name="security_banner">Need security verification?\nVisit Campus Main Gate Desk.</string>
+
+    <!-- Search Screen -->
+    <string name="search_screen_title">Search &amp; Filter Reports</string>
+    <string name="search_input_hint">Type title, category, institution...</string>
+    <string name="tab_lost_items">Lost Items</string>
+    <string name="tab_found_items">Found Items</string>
+    <string name="search_empty">No reports match your filters.</string>
+
+    <!-- My Reports Screen -->
+    <string name="my_reports_title">My Submitted Reports</string>
+    <string name="my_reports_sub">Track &amp; manage items you have lost or found</string>
+    <string name="tab_all">All</string>
+    <string name="tab_lost">Lost</string>
+    <string name="tab_found">Found</string>
+    <string name="tab_claimed">Claimed</string>
+    <string name="no_my_reports">You have not submitted any reports yet.</string>
+    <string name="my_reports_heading">My Submitted Reports</string>
+    <string name="my_reports_desc">Track &amp; manage items you have lost or found</string>
+    <string name="tab_claimed_items">Claimed</string>
+
+    <!-- Notifications / Alerts Screen -->
+    <string name="notifications_title">Campus Alerts</string>
+    <string name="notifications_sub">Real-time updates and match notifications</string>
+    <string name="no_notifications">No alerts or notifications yet.</string>
+    <string name="alerts_screen_title">Alerts &amp; Match Updates</string>
+    <string name="alerts_screen_desc">Notifications when lost items match found items</string>
+    <string name="no_alerts_title">No new alerts right now</string>
+    <string name="no_alerts_desc">When a lost item matches a found report, you will be notified here immediately.</string>
+
+    <!-- Admin Portal Screen -->
+    <string name="admin_title">Admin Security Portal</string>
+    <string name="total_reports">Total Reports</string>
+    <string name="pending_matches">Pending Matches</string>
+    <string name="claimed_items">Claimed</string>
+    <string name="admin_logout">Admin Log Out</string>
+
+    <!-- Report Item Screen -->
+    <string name="report_item_title">Submit Item Report</string>
+    <string name="report_type_lost">Lost Item</string>
+    <string name="report_type_found">Found Item</string>
+    <string name="item_title">Item Name / Title *</string>
+    <string name="item_desc">Detailed Description *</string>
+    <string name="category">Category *</string>
+    <string name="location">General Location *</string>
+    <string name="specific_location">Specific Room / Building Detail</string>
+    <string name="secret_question">Secret Identifier (e.g. Wallpaper/Scratch)</string>
+    <string name="submit_report">Submit Report</string>
+    <string name="item_name_hint">Item Name / Title *</string>
+    <string name="category_hint">Category *</string>
+    <string name="institution_hint">Institution / Campus *</string>
+    <string name="general_location_hint">General Location *</string>
+    <string name="specific_location_hint">Specific Room / Building Detail</string>
+    <string name="detailed_desc_hint">Detailed Description *</string>
+    <string name="secret_id_hint">Secret Identifier (e.g. Wallpaper/Scratch)</string>
+    <string name="item_photo_label">Item Photo (Optional)</string>
+    <string name="tap_photo_prompt">Tap to select or take photo</string>
+    <string name="map_heading">Pin Location on Map</string>
 </resources>

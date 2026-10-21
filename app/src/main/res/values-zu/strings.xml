@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CampusFind</string>
+    <string name="tagline">Thola eng okulahlekileyo. Buyisa eng oyitholileyo.</string>
+    <string name="google_maps_key">AIzaSyDUyHMX4LRgyGKc--lHxKdHTjCOiPT5DhU</string>
+
+    <string name="upload_photo">Faka Noma Thatha Isithombe</string>
+    <string name="lost_reports">Izinto ezilahlekile</string>
+    <string name="found_reports">Izinto ezitholakele</string>
+    <string name="items_returned">Izinto ezibuyisiwe</string>
+    <string name="section_account">I-AKHAWUNTI</string>
+    <string name="edit_profile">Hlela Iphrofayela</string>
+    <string name="change_password">Shintsha Iphasiwedi</string>
+    <string name="section_notifications">IZAZISO</string>
+    <string name="push_notif">Izaziso ze-Push</string>
+    <string name="match_alerts">Izaziso Zokufanisa</string>
+    <string name="report_updates">Ukuvuselelwa Kwemibiko</string>
+    <string name="section_language">ULIMI</string>
+    <string name="sa_languages">IZILIMI ZASE-SA</string>
+    <string name="lang_english">English (Default)</string>
+    <string name="lang_setswana">Setswana</string>
+    <string name="lang_isizulu">isiZulu</string>
+    <string name="batswana">Batswana</string>
+    <string name="amazulu">AmaZulu</string>
+    <string name="section_app_preferences">OKUTHANDWAYO</string>
+    <string name="dark_mode">Imodi Emnyama</string>
+    <string name="dark_mode_active">Imodi emnyama iyasebenza</string>
+    <string name="network_connectivity">Ukuxhumana Kwenethiwekhi</string>
+    <string name="network_connected">Ixhumekile ku-Campus REST API.</string>
+    <string name="online">• Ku-inthanethi</string>
+    <string name="section_privacy">UBUMFIHLO KANYE NOKUPHEPHA</string>
+    <string name="privacy_policy">Inqubomgomo Yobumfihlo</string>
+    <string name="terms_use">Imigomo Yokusebenzisa</string>
+    <string name="help_support">Usizo &amp; Ukusekelwa</string>
+    <string name="log_out">Phuma</string>
+    <string name="app_version">CampusFind v1.0.0</string>
+
+    <string name="get_started">Qala Lapha</string>
+    <string name="log_in">Ngena</string>
+    <string name="login_title">Wamukelekile futhi</string>
+    <string name="login_subtitle">Ngena ku-CampusFind</string>
+    <string name="email_hint">Ikheli le-imeyili</string>
+    <string name="password_hint">Iphasiwedi</string>
+    <string name="forgot_password">Ukhohlwe iphasiwedi?</string>
+    <string name="login_btn">Ngena</string>
+    <string name="or_divider">NOMA</string>
+    <string name="google_signin">Qhubeka no-Google</string>
+    <string name="admin_quick_login">Ngena ngokushesha njengo-Admin</string>
+    <string name="no_account_prefix">Awunayo i-akhawunti? </string>
+    <string name="register_link">Bhalisa Lapha</string>
+
+    <string name="register_title">DALA I-AKHAWUNTI</string>
+    <string name="register_subtitle">Joyina i-CampusFind</string>
+    <string name="first_name">Igama</string>
+    <string name="last_name">Isibongo</string>
+    <string name="institution">Isikhungo / Inyuvesi</string>
+    <string name="student_number">Inombolo yomfundi</string>
+    <string name="confirm_password">Qinisekisa iphasiwedi</string>
+    <string name="terms_checkbox">Ngivumelana Nemigomo</string>
+    <string name="register_btn">Dala I-Akhawunti</string>
+    <string name="already_account">Unayo i-akhawunti? </string>
+
+    <string name="greeting">SANIBONANI,</string>
+    <string name="search_hint">Sesha izinto ezilahlekile...</string>
+    <string name="report_lost">Bika Elahlekile</string>
+    <string name="report_lost_sub">Ngilahlekelwe yinto</string>
+    <string name="report_found">Bika Etholakele</string>
+    <string name="report_found_sub">Ngithole into</string>
+    <string name="recent_reports">• Imibiko Yakamuva</string>
+    <string name="see_all">Bona Konke &gt;</string>
+    <string name="no_reports">Ayikho imibiko etholakele.</string>
+    <string name="light_mode">Okukhanya</string>
+    <string name="security_banner">Udinga ukuqinisekiswa kwezokuphepha?\nVakashela iDeski LaseKhamphasi.</string>
+
+    <string name="search_screen_title">Sesha &amp; Hlunga Imibiko</string>
+    <string name="search_input_hint">Thayipha isihloko, isigaba, isikhungo...</string>
+    <string name="tab_lost_items">Izinto Ezilahlekile</string>
+    <string name="tab_found_items">Izinto Ezitholakele</string>
+    <string name="search_empty">Ayikho imibiko ehambisana nezihlungi zakho.</string>
+
+    <string name="my_reports_title">Imibiko Yami</string>
+    <string name="my_reports_sub">Landela imibiko oyithumele</string>
+    <string name="tab_all">Konke</string>
+    <string name="tab_lost">Elahlekile</string>
+    <string name="tab_found">Etholakele</string>
+    <string name="tab_claimed">Thathiwe</string>
+    <string name="no_my_reports">Awukathumeli mibiko.</string>
+
+    <string name="notifications_title">Izaziso Zekhamphasi</string>
+    <string name="notifications_sub">Izibuyekezo zesikhathi sangempela</string>
+    <string name="no_notifications">Azikho izaziso.</string>
+
+    <string name="admin_title">Iphothali Yezokuphepha ye-Admin</string>
+    <string name="total_reports">Imibiko Yonke</string>
+    <string name="pending_matches">Ukufana Okusalindile</string>
+    <string name="claimed_items">Thathiwe</string>
+    <string name="admin_logout">Phuma ku-Admin</string>
+
+    <string name="report_item_title">Thumela Umbiko Wento</string>
+    <string name="report_type_lost">Into Elahlekile</string>
+    <string name="report_type_found">Into Etholakele</string>
+    <string name="item_title">Igama Lento / Isihloko *</string>
+    <string name="item_desc">Incazelo Eningiliziwe *</string>
+    <string name="category">Isigaba *</string>
+    <string name="location">Indawo *</string>
+    <string name="specific_location">Imininingwane Yendawo / Igumbi</string>
+    <string name="secret_question">Umbuzo Oyimfihlo</string>
+    <string name="submit_report">Thumela Umbiko</string>
+</resources>
