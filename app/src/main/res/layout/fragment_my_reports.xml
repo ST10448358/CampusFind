@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#080C14"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_reports_heading"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/my_reports_desc"
+            android:textColor="#9CA3AF"
+            android:textSize="13sp" />
+
+        <!-- Status Filter Tabs -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs_my_reports"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_rounded_pill"
+            android:backgroundTint="#0E1524"
+            app:tabIndicatorColor="@color/tab_indicator"
+            app:tabIndicatorHeight="3dp"
+            app:tabSelectedTextColor="@color/tab_selected_text"
+            app:tabTextColor="@color/tab_unselected_text">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_all" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_lost" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_found" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_claimed_items" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <!-- RecyclerView List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_my_reports"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1" />
+
+        <!-- Empty State -->
+        <TextView
+            android:id="@+id/tv_my_reports_empty"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/no_my_reports"
+            android:textColor="#9CA3AF"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</layout>

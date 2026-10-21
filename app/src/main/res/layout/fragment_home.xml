@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#080C14"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Top Header Bar -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_top_header"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/app_name"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_campus_find_logo" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/tv_home_brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Campus"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/card_top_header"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_home_brand_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Find"
+                android:textColor="#00A884"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintStart_toEndOf="@id/tv_home_brand"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand" />
+
+            <TextView
+                android:id="@+id/tv_home_tagline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/tagline"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintEnd_toStartOf="@id/btn_theme_toggle"
+                app:layout_constraintStart_toEndOf="@id/tv_home_brand_find"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand" />
+
+            <!-- Light/Dark Mode Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_theme_toggle"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:paddingHorizontal="10dp"
+                android:text="@string/light_mode"
+                android:textColor="#F9FAFB"
+                android:textSize="11sp"
+                app:backgroundTint="#0E1524"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_menu_compass"
+                app:iconSize="14dp"
+                app:iconTint="#FBBC05"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintEnd_toStartOf="@id/btn_language_dropdown"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
+                app:strokeColor="#1A263B" />
+
+            <!-- Language Dropdown Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_language_dropdown"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp"
+                android:paddingHorizontal="10dp"
+                android:text="EN"
+                android:textColor="#F9FAFB"
+                android:textSize="11sp"
+                app:backgroundTint="#0E1524"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_menu_mapmode"
+                app:iconSize="14dp"
+                app:iconTint="#00A884"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintEnd_toStartOf="@id/btn_alerts_bell"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
+                app:strokeColor="#1A263B" />
+
+            <!-- Alerts Bell Icon Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_alerts_bell"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp"
+                android:padding="0dp"
+                app:backgroundTint="#0E1524"
+                app:cornerRadius="8dp"
+                app:icon="@android:drawable/ic_popup_reminder"
+                app:iconGravity="textStart"
+                app:iconSize="16dp"
+                app:iconTint="#F9FAFB"
+                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
+                app:strokeColor="#1A263B" />
+
+            <!-- User Profile & Search Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_profile_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="#0E1524"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintTop_toBottomOf="@id/btn_theme_toggle"
+                app:strokeColor="#1A263B"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/greeting"
+                        android:textColor="#00A884"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginEnd="12dp"
+                        android:text="Katlego Campus"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/fl_home_avatar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_greeting" />
+
+                    <TextView
+                        android:id="@+id/tv_user_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="ID: 224098112"
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+                    <!-- Circular Avatar with Online Indicator -->
+                    <FrameLayout
+                        android:id="@+id/fl_home_avatar"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/img_home_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#1F2D42"
+                            android:padding="10dp"
+                            android:scaleType="centerCrop"
+                            android:src="@android:drawable/ic_menu_camera"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                            app:strokeColor="#00A884"
+                            app:strokeWidth="2dp"
+                            app:tint="#F9FAFB" />
+
+                        <!-- Online status dot badge -->
+                        <View
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="bottom|end"
+                            android:background="@drawable/bg_circle_dot"
+                            android:backgroundTint="#10B981" />
+                    </FrameLayout>
+
+                    <!-- Embedded Search Bar -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_home_search"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="@string/search_hint"
+                        app:boxBackgroundColor="#101726"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:boxStrokeColor="#1D2A3F"
+                        app:hintTextColor="#6B7280"
+                        app:startIconDrawable="@android:drawable/ic_menu_search"
+                        app:startIconTint="#9CA3AF">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_home_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#F9FAFB"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quick Action Cards Row -->
+            <LinearLayout
+                android:id="@+id/ll_quick_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/card_profile_search">
+
+                <!-- Report Lost Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_report_lost"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#121B2D"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="#232C40"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/bg_circle_dot"
+                            android:backgroundTint="#2D2354"
+                            android:contentDescription="@string/report_lost"
+                            android:padding="6dp"
+                            android:src="@android:drawable/ic_menu_help"
+                            app:tint="#818CF8" />
+
+                        <TextView
+                            android:id="@+id/tv_lost_card_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/report_lost"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_lost_card_sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/report_lost_sub"
+                            android:textColor="#9CA3AF"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Report Found Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_report_found"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#0F2128"
+                    app:cardCornerRadius="18dp"
+                    app:strokeColor="#133833"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/bg_circle_dot"
+                            android:backgroundTint="#0F332A"
+                            android:contentDescription="@string/report_found"
+                            android:padding="6dp"
+                            android:src="@android:drawable/ic_input_add"
+                            app:tint="#00A884" />
+
+                        <TextView
+                            android:id="@+id/tv_found_card_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/report_found"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_found_card_sub"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/report_found_sub"
+                            android:textColor="#00A884"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Recent Activity Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_recent_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="#0E1524"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_quick_actions"
+                app:strokeColor="#1A263B"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_recent_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/recent_reports"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_see_all"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="@string/see_all"
+                            android:textColor="#00A884"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_no_reports"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="24dp"
+                        android:gravity="center"
+                        android:text="@string/no_reports"
+                        android:textColor="#9CA3AF"
+                        android:textSize="14sp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_home_reports"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Campus Security Banner Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_security_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#0E1524"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_recent_activity"
+                app:strokeColor="#1A263B"
+                app:strokeWidth="1dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/img_shield"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/get_started"
+                        android:src="@android:drawable/ic_lock_lock"
+                        app:tint="#00A884" />
+
+                    <TextView
+                        android:id="@+id/tv_security_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:layout_toStartOf="@id/tv_ext_badge"
+                        android:layout_toEndOf="@id/img_shield"
+                        android:text="@string/security_banner"
+                        android:textColor="#F9FAFB"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ext_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_rounded_pill"
+                        android:backgroundTint="#0F2B32"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp"
+                        android:text="Ext: 4400"
+                        android:textColor="#00A884"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
