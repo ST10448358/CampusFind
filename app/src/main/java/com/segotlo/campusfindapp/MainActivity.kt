@@ -1,168 +1,71 @@
 package com.segotlo.campusfindapp
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.*
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
 import com.segotlo.campusfindapp.data.MockRepository
-import com.segotlo.campusfindapp.ui.screens.*
-import com.segotlo.campusfindapp.ui.theme.CampusFindTheme
-import kotlinx.coroutines.launch
+import com.segotlo.campusfindapp.databinding.ActivityMainBinding
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private var lastDestinationId: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        lastDestinationId = savedInstanceState?.getInt("LAST_DESTINATION", 0) ?: 0
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         MockRepository.init(applicationContext)
-        com.segotlo.campusfindapp.util.NotificationHelper.createNotificationChannels(applicationContext)
-        setContent {
-            val isDarkThemeRepo by MockRepository.isDarkTheme.collectAsState()
-            var isDarkMode by remember { mutableStateOf(isDarkThemeRepo) }
 
-            LaunchedEffect(isDarkThemeRepo) {
-                isDarkMode = isDarkThemeRepo
+        val navHostFragment = binding.navHostFragment.getFragment<NavHostFragment>()
+        val navController = navHostFragment.navController
+
+        if (lastDestinationId != 0 && lastDestinationId != R.id.openingFragment) {
+            try {
+                navController.navigate(lastDestinationId)
+            } catch (_: Throwable) {}
+        }
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            val navOptions = NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setRestoreState(true)
+                .setPopUpTo(R.id.homeFragment, inclusive = false, saveState = true)
+                .build()
+
+            try {
+                navController.navigate(item.itemId, null, navOptions)
+                true
+            } catch (_: Exception) {
+                false
             }
+        }
 
-            CampusFindTheme(darkTheme = isDarkMode) {
-                CampusFindApp(
-                    isDarkMode = isDarkMode,
-                    onToggleDarkMode = { newMode ->
-                        isDarkMode = newMode
-                        MockRepository.setDarkTheme(newMode)
-                    }
-                )
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            lastDestinationId = destination.id
+            when (destination.id) {
+                R.id.homeFragment,
+                R.id.searchFragment,
+                R.id.myReportsFragment,
+                R.id.notificationsFragment,
+                R.id.profileFragment -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                    binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+                }
+                else -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                }
             }
         }
     }
-}
 
-@Composable
-fun CampusFindApp(isDarkMode: Boolean, onToggleDarkMode: (Boolean) -> Unit) {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "opening") {
-        composable("opening") {
-            OpeningScreen(
-                onGetStarted = { navController.navigate("register") },
-                onLogin = { navController.navigate("login") }
-            )
-        }
-        composable("login") {
-            LoginScreen(
-                onBack = { navController.popBackStack() },
-                onLoginSuccess = { email, role ->
-                    if (role == com.segotlo.campusfindapp.data.UserRole.ADMIN) {
-                        navController.navigate("admin") {
-                            popUpTo("opening") { inclusive = true }
-                        }
-                    } else {
-                        navController.navigate("home") {
-                            popUpTo("opening") { inclusive = true }
-                        }
-                    }
-                },
-                onRegister = {
-                    navController.navigate("register") {
-                        popUpTo("login") { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable("register") {
-            val scope = rememberCoroutineScope()
-            RegisterScreen(
-                onBack = { navController.popBackStack() },
-                onLoginNav = {
-                    navController.navigate("login") {
-                        popUpTo("register") { inclusive = true }
-                    }
-                },
-                onRegisterSuccess = { firstName, lastName, email, password, studentNumber, institution, avatarUrl ->
-                    scope.launch {
-                        val result = MockRepository.register(
-                            firstName = firstName,
-                            lastName = lastName,
-                            email = email,
-                            password = password,
-                            studentNumber = studentNumber,
-                            institution = institution,
-                            avatarUrl = avatarUrl
-                        )
-                        if (result.isSuccess) {
-                            navController.navigate("home") {
-                                popUpTo("opening") { inclusive = true }
-                            }
-                        }
-                    }
-                }
-            )
-        }
-        composable("home") {
-            HomeDashboardScreen(
-                onReportLost = { navController.navigate("report_lost") },
-                onReportFound = { navController.navigate("report_found") },
-                onViewAllReports = { navController.navigate("search") },
-                onNavigate = { route -> navController.navigate(route) }
-            )
-        }
-        composable("report_lost") {
-            ReportLostScreen(
-                onClose = { navController.popBackStack() },
-                onSubmitSuccess = { navController.popBackStack() }
-            )
-        }
-        composable("report_found") {
-            ReportFoundScreen(
-                onClose = { navController.popBackStack() },
-                onSubmitSuccess = { navController.popBackStack() }
-            )
-        }
-        composable("search") {
-            SearchScreen(
-                onNavigate = { route -> navController.navigate(route) }
-            )
-        }
-        composable("reports") {
-            MyReportsScreen(
-                onNavigate = { route -> navController.navigate(route) }
-            )
-        }
-        composable("alerts") {
-            NotificationsScreen(
-                onNavigate = { route -> navController.navigate(route) }
-            )
-        }
-        composable("profile") {
-            ProfileSettingsScreen(
-                isDarkMode = isDarkMode,
-                onToggleDarkMode = onToggleDarkMode,
-                onNavigate = { route -> navController.navigate(route) },
-                onLogout = {
-                    MockRepository.logout()
-                    navController.navigate("login") {
-                        popUpTo("opening") { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable("admin") {
-            AdminPortalScreen(
-                isDarkMode = isDarkMode,
-                onToggleDarkMode = onToggleDarkMode,
-                onStudentView = {
-                    navController.navigate("home")
-                },
-                onLogout = {
-                    MockRepository.logout()
-                    navController.navigate("login") {
-                        popUpTo("opening") { inclusive = true }
-                    }
-                }
-            )
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("LAST_DESTINATION", lastDestinationId)
     }
 }

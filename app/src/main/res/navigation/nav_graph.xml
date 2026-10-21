@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/openingFragment">
+
+    <fragment
+        android:id="@+id/openingFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.OpeningFragment"
+        android:label="OpeningFragment" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.LoginFragment"
+        android:label="LoginFragment" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.RegisterFragment"
+        android:label="RegisterFragment" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.HomeFragment"
+        android:label="HomeFragment" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.SearchFragment"
+        android:label="SearchFragment" />
+
+    <fragment
+        android:id="@+id/myReportsFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.MyReportsFragment"
+        android:label="MyReportsFragment" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.NotificationsFragment"
+        android:label="NotificationsFragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.ProfileFragment"
+        android:label="ProfileFragment" />
+
+    <fragment
+        android:id="@+id/reportItemFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.ReportItemFragment"
+        android:label="ReportItemFragment" />
+
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminFragment"
+        android:label="AdminFragment" />
+
+</navigation>

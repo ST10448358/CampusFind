@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_notif_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="#0E1524"
+    app:cardCornerRadius="16dp"
+    app:strokeColor="#1A263B"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/img_notif_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_dot"
+            android:backgroundTint="#0F332A"
+            android:contentDescription="Icon"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_popup_reminder"
+            app:tint="#00A884" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_notif_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Potential Item Match Found!"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_notif_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="A found 'Dell Laptop Charger' closely matches your lost report."
+                android:textColor="#9CA3AF"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_notif_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="10 mins ago"
+                android:textColor="#6B7280"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

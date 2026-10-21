@@ -1,7 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.CampusFindApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!-- Base application theme for Night/Dark mode. -->
+    <style name="Base.Theme.CampusFindApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/teal_accent</item>
+        <item name="colorPrimaryVariant">@color/teal_primary</item>
+        <item name="colorOnPrimary">@color/deep_navy</item>
+
+        <item name="colorSecondary">@color/accent_purple</item>
+        <item name="colorSecondaryVariant">@color/accent_purple</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+        <item name="android:colorBackground">@color/color_background</item>
+        <item name="colorOnBackground">@color/text_primary</item>
+
+        <item name="android:statusBarColor">@color/color_background</item>
+        <item name="android:windowBackground">@color/color_background</item>
+
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
     </style>
+
+    <style name="Theme.CampusFindApp" parent="Base.Theme.CampusFindApp" />
 </resources>

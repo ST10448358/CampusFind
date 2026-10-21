@@ -14,14 +14,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object MockRepository {
-    private val userRepository: UserRepository = FirebaseUserRepository()
-    private val reportRepository: ReportRepository = FirebaseReportRepository()
-    private val notificationRepository: NotificationRepository = FirebaseNotificationRepository()
+    private val userRepository: UserRepository by lazy { FirebaseUserRepository() }
+    private val reportRepository: ReportRepository by lazy { FirebaseReportRepository() }
+    private val notificationRepository: NotificationRepository by lazy { FirebaseNotificationRepository() }
     private val scope = CoroutineScope(Dispatchers.IO)
     private var appContext: android.content.Context? = null
     
-    val currentUser: StateFlow<User?> = userRepository.currentUser
-    val reports: StateFlow<List<Report>> = reportRepository.allReports
+    val currentUser: StateFlow<User?> get() = userRepository.currentUser
+    val reports: StateFlow<List<Report>> get() = reportRepository.allReports
 
     val notifications: StateFlow<List<AppNotification>> = currentUser.flatMapLatest { user ->
         if (user != null) {
@@ -36,6 +36,11 @@ object MockRepository {
 
     fun init(context: android.content.Context) {
         appContext = context.applicationContext
+        try {
+            com.google.firebase.FirebaseApp.initializeApp(context.applicationContext)
+        } catch (_: Exception) {
+            // Already initialized
+        }
         com.segotlo.campusfindapp.util.NotificationHelper.createNotificationChannels(context.applicationContext)
     }
 
@@ -53,10 +58,8 @@ object MockRepository {
                 message = message,
                 reportId = reportId
             )
-            // Always save to in-app notification repository
             notificationRepository.sendNotification(appNotification)
 
-            // Check target user preferences for OS Push Notification
             val user = currentUser.value
             if (user != null && user.id == userId) {
                 if (!user.pushNotificationsEnabled) return@launch
@@ -83,6 +86,29 @@ object MockRepository {
 
     suspend fun login(email: String, password: String): Result<User> {
         return userRepository.login(email, password)
+    }
+
+    suspend fun loginWithGoogle(
+        email: String,
+        firstName: String,
+        lastName: String,
+        avatarUrl: String? = null
+    ): Result<User> {
+        val registerRes = userRepository.register(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            password = "GoogleUserPassword123!",
+            studentNumber = "G-${(10000..99999).random()}",
+            institution = "University of Pretoria",
+            avatarUrl = avatarUrl,
+            role = UserRole.STUDENT
+        )
+        return if (registerRes.isSuccess) {
+            registerRes
+        } else {
+            userRepository.login(email, "GoogleUserPassword123!")
+        }
     }
 
     suspend fun register(
@@ -157,10 +183,8 @@ object MockRepository {
 
     fun matchReports(lostReport: Report, foundReport: Report) {
         scope.launch {
-            // Update statuses and link IDs
             reportRepository.linkReports(lostReport.id, foundReport.id)
             
-            // Send notifications according to user preferences
             sendNotificationWithPreferences(
                 userId = lostReport.userId,
                 title = "Possible Match Found!",
