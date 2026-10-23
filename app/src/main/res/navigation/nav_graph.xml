@@ -54,4 +54,34 @@
         android:name="com.segotlo.campusfindapp.ui.xml.AdminFragment"
         android:label="AdminFragment" />
 
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminDashboardFragment"
+        android:label="AdminDashboardFragment" />
+
+    <fragment
+        android:id="@+id/adminReportsFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminReportsFragment"
+        android:label="AdminReportsFragment" />
+
+    <fragment
+        android:id="@+id/adminMatchesFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminMatchesFragment"
+        android:label="AdminMatchesFragment" />
+
+    <fragment
+        android:id="@+id/adminUsersFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminUsersFragment"
+        android:label="AdminUsersFragment" />
+
+    <fragment
+        android:id="@+id/adminCategoriesFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminCategoriesFragment"
+        android:label="AdminCategoriesFragment" />
+
+    <fragment
+        android:id="@+id/adminProfileFragment"
+        android:name="com.segotlo.campusfindapp.ui.xml.AdminProfileFragment"
+        android:label="AdminProfileFragment" />
+
 </navigation>

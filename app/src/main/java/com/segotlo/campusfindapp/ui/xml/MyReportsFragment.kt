@@ -93,7 +93,9 @@ class MyReportsFragment : Fragment() {
         dialogBinding.tvDetailTitle.text = report.title
         dialogBinding.tvDetailDesc.text = report.description
         dialogBinding.tvDetailLocation.text = "📍 ${report.institution} • ${report.location.name}"
-        dialogBinding.tvDetailContact.text = "Status: ${report.status.name}"
+        
+        val pinInfo = if (report.matchedWithId != null) "\n\n🔐 Secure Handover PIN: ${report.handoverPin}\n📍 Handover Desk: Campus Main Gate Desk" else ""
+        dialogBinding.tvDetailContact.text = "Status: ${report.status.name}$pinInfo"
 
         dialogBinding.btnDetailClose.setOnClickListener { dialog.dismiss() }
         dialogBinding.btnDetailClaim.setOnClickListener {

@@ -5,9 +5,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080C14"
+        android:background="@color/color_background"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="42dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -59,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#0E1524"
+            app:cardBackgroundColor="@color/color_surface"
             app:cardCornerRadius="20dp"
             app:strokeColor="#1A263B"
             app:strokeWidth="1dp">

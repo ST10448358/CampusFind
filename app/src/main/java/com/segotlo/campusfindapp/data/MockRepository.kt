@@ -150,6 +150,12 @@ object MockRepository {
 
     fun setDarkTheme(isDark: Boolean) {
         _isDarkTheme.value = isDark
+        try {
+            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                if (isDark) androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+                else androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+            )
+        } catch (_: Throwable) {}
     }
 
     fun addReport(report: Report) {

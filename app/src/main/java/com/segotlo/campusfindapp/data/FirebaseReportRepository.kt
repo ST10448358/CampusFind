@@ -41,6 +41,21 @@ class FirebaseReportRepository : ReportRepository {
             institution = "University of Pretoria",
             dateOccurred = Date(),
             status = ReportStatus.OPEN
+        ),
+        Report(
+            id = "rep_3",
+            userId = "student_user_id_2",
+            userDisplayName = "Lerato Mokoena",
+            userEmail = "lerato@campusfind.ac.za",
+            type = ReportType.LOST,
+            title = "Scientific Calculator & Pencil Case",
+            description = "Black scientific calculator in a blue canvas pencil case.",
+            category = ItemCategory.ELECTRONICS,
+            location = CampusLocation.MAIN_LIBRARY,
+            specificLocationDetail = "Study Area",
+            institution = "University of Pretoria",
+            dateOccurred = Date(),
+            status = ReportStatus.MATCH_SUGGESTED
         )
     )
 

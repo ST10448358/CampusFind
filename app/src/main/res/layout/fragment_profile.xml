@@ -5,21 +5,23 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080C14"
+        android:background="@color/color_background"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="42dp">
 
             <!-- Profile Header Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="20dp"
                 app:strokeColor="#1A263B"
                 app:strokeWidth="1dp">
@@ -210,7 +212,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="16dp"
                 app:strokeColor="#1A263B"
                 app:strokeWidth="1dp">
@@ -293,7 +295,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="16dp"
                 app:strokeColor="#1A263B"
                 app:strokeWidth="1dp">

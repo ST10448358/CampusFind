@@ -16,6 +16,11 @@ class CampusFindAppApplication : Application() {
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("en"))
         } catch (_: Throwable) {}
 
+        // Default to Dark Mode on fresh startup
+        try {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } catch (_: Throwable) {}
+
         // Global uncaught exception handler to log the exact crash stack trace
         val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->

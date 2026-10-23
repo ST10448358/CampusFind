@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
                 if (result.isSuccess) {
                     val user = result.getOrNull()
                     if (user?.role == UserRole.ADMIN) {
-                        findNavController().navigate(R.id.adminFragment)
+                        findNavController().navigate(R.id.adminDashboardFragment)
                     } else {
                         findNavController().navigate(R.id.homeFragment)
                     }
@@ -75,7 +75,8 @@ class LoginFragment : Fragment() {
                 if (result.isSuccess) {
                     findNavController().navigate(R.id.homeFragment)
                 } else {
-                    Toast.makeText(requireContext(), "Google sign-in failed", Toast.LENGTH_SHORT).show()
+                    val err = result.exceptionOrNull()?.message ?: "Unknown error"
+                    Toast.makeText(requireContext(), "Google sign-in failed: $err", Toast.LENGTH_LONG).show()
                 }
             }
         }

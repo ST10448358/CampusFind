@@ -12,7 +12,20 @@
           "package_name": "com.segotlo.campusfindapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "566079707733-a9ro4oob8be4sqqf3g9939k5ralrul02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.segotlo.campusfindapp",
+            "certificate_hash": "0227bc8eeb3c1f971b596313d40824107ab13342"
+          }
+        },
+        {
+          "client_id": "566079707733-hcp80kf8lvf4vbk97nk485tnec1ebquq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAZbVHgNw_IV54mYK1ba70-ah_LpWWlHuU"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566079707733-hcp80kf8lvf4vbk97nk485tnec1ebquq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

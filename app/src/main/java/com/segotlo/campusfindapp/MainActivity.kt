@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.segotlo.campusfindapp.data.MockRepository
 import com.segotlo.campusfindapp.databinding.ActivityMainBinding
+import com.segotlo.campusfindapp.ui.xml.CampusBotDialog
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             try {
                 navController.navigate(lastDestinationId)
             } catch (_: Throwable) {}
+        }
+
+        binding.btnFloatingAskAssistant.setOnClickListener {
+            CampusBotDialog().show(supportFragmentManager, "CampusBotDialog")
         }
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -54,11 +59,32 @@ class MainActivity : AppCompatActivity() {
                 R.id.myReportsFragment,
                 R.id.notificationsFragment,
                 R.id.profileFragment -> {
+                    if (binding.bottomNavigation.tag != "student") {
+                        binding.bottomNavigation.tag = "student"
+                        binding.bottomNavigation.menu.clear()
+                        binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu)
+                    }
                     binding.bottomNavigation.visibility = View.VISIBLE
                     binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+                    binding.btnFloatingAskAssistant.visibility = View.VISIBLE
+                }
+                R.id.adminDashboardFragment,
+                R.id.adminReportsFragment,
+                R.id.adminMatchesFragment,
+                R.id.adminUsersFragment,
+                R.id.adminProfileFragment -> {
+                    if (binding.bottomNavigation.tag != "admin") {
+                        binding.bottomNavigation.tag = "admin"
+                        binding.bottomNavigation.menu.clear()
+                        binding.bottomNavigation.inflateMenu(R.menu.admin_bottom_nav_menu)
+                    }
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                    binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+                    binding.btnFloatingAskAssistant.visibility = View.GONE
                 }
                 else -> {
                     binding.bottomNavigation.visibility = View.GONE
+                    binding.btnFloatingAskAssistant.visibility = View.GONE
                 }
             }
         }

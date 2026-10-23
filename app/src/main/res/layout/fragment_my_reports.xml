@@ -5,9 +5,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080C14"
+        android:background="@color/color_background"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="42dp">
 
         <TextView
             android:layout_width="wrap_content"

@@ -5,9 +5,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080C14"
+        android:background="@color/color_background"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="42dp">
 
         <!-- Title Header -->
         <RelativeLayout
@@ -37,6 +39,7 @@
 
         <!-- Search Input -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search_query"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,6 +51,9 @@
             app:boxCornerRadiusTopEnd="14dp"
             app:boxCornerRadiusTopStart="14dp"
             app:boxStrokeColor="#1D2A3F"
+            app:endIconDrawable="@android:drawable/ic_btn_speak_now"
+            app:endIconMode="custom"
+            app:endIconTint="#00A884"
             app:hintTextColor="#6B7280"
             app:startIconDrawable="@android:drawable/ic_menu_search"
             app:startIconTint="#9CA3AF">

@@ -1,6 +1,8 @@
 package com.segotlo.campusfindapp.ui.xml
 
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +33,17 @@ class SearchFragment : Fragment() {
 
     private var selectedCategory: ItemCategory? = null
     private var selectedLocation: CampusLocation? = null
+
+    private val speechResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+            if (!spokenText.isNullOrEmpty()) {
+                binding.etSearchQuery.setText(spokenText)
+                binding.etSearchQuery.setSelection(spokenText.length)
+                Toast.makeText(requireContext(), "Voice search: \"$spokenText\"", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +76,18 @@ class SearchFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        binding.tilSearchQuery.setEndIconOnClickListener {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to search campus reports...")
+            }
+            try {
+                speechResultLauncher.launch(intent)
+            } catch (_: Throwable) {
+                Toast.makeText(requireContext(), "Speech recognition not available on this device", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         binding.tabsSearchType.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

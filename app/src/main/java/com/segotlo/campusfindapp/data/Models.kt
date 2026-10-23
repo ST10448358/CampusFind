@@ -79,6 +79,7 @@ data class Report(
     val secretIdentifierQuestion: String? = null,
     val referenceCode: String = "CF-${(1000..9999).random()}",
     val matchedWithId: String? = null,
+    val handoverPin: String = "${(1000..9999).random()}",
     val createdAt: Date = Date()
 ) {
     val effectiveLatitude: Double get() = latitude ?: location.getCoordinates().first
