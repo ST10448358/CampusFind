@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/adminDashboardFragment"
+        android:icon="@drawable/ic_nav_home"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/adminReportsFragment"
+        android:icon="@drawable/ic_nav_reports"
+        android:title="Reports" />
+
+    <item
+        android:id="@+id/adminMatchesFragment"
+        android:icon="@drawable/ic_nav_search"
+        android:title="Matches" />
+
+    <item
+        android:id="@+id/adminUsersFragment"
+        android:icon="@drawable/ic_nav_profile"
+        android:title="Users" />
+
+    <item
+        android:id="@+id/adminProfileFragment"
+        android:icon="@drawable/ic_nav_profile"
+        android:title="Profile" />
+
+</menu>

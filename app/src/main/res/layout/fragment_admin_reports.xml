@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_background"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="42dp">
+
+            <!-- Admin Reports Header Bar -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Report Management"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CAMPUSFIND ADMIN"
+                        android:textColor="#0EA5E9"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- Top Management Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/color_surface"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1A263B"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Campus Report Management"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Review incoming student submissions, verify authenticity, manage status, and coordinate handovers."
+                        android:textColor="#9CA3AF"
+                        android:textSize="13sp" />
+
+                    <!-- Search Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_admin_search"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Search ID, item name, stu..."
+                        app:boxBackgroundColor="#101726"
+                        app:boxCornerRadiusBottomEnd="14dp"
+                        app:boxCornerRadiusBottomStart="14dp"
+                        app:boxCornerRadiusTopEnd="14dp"
+                        app:boxCornerRadiusTopStart="14dp"
+                        app:boxStrokeColor="#1D2A3F"
+                        app:endIconDrawable="@android:drawable/ic_btn_speak_now"
+                        app:endIconMode="custom"
+                        app:endIconTint="#00A884"
+                        app:hintTextColor="#6B7280"
+                        app:startIconDrawable="@android:drawable/ic_menu_search"
+                        app:startIconTint="#9CA3AF">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_admin_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#F9FAFB"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Filter Chips Horizontal Scroll -->
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/chip_all"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="All Reports 0"
+                                android:textColor="#FFFFFF"
+                                android:textSize="12sp"
+                                app:backgroundTint="#00A884"
+                                app:cornerRadius="12dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/chip_pending"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="Pending Review 0"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp"
+                                app:backgroundTint="#101726"
+                                app:cornerRadius="12dp"
+                                app:strokeColor="#1F2D42" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/chip_approved_lost"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="Approved Lost 0"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp"
+                                app:backgroundTint="#101726"
+                                app:cornerRadius="12dp"
+                                app:strokeColor="#1F2D42" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/chip_approved_found"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:layout_marginEnd="8dp"
+                                android:text="Approved Found 0"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp"
+                                app:backgroundTint="#101726"
+                                app:cornerRadius="12dp"
+                                app:strokeColor="#1F2D42" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/chip_returned"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:text="Returned 0"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp"
+                                app:backgroundTint="#101726"
+                                app:cornerRadius="12dp"
+                                app:strokeColor="#1F2D42" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Reports Table Container Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/color_surface"
+                app:cardCornerRadius="20dp"
+                app:strokeColor="#1A263B"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Table Headers -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Item &amp; Identifier"
+                            android:textColor="#9CA3AF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Type"
+                            android:textColor="#9CA3AF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:text="Category"
+                            android:textColor="#9CA3AF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:text="Status"
+                            android:textColor="#9CA3AF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#1A263B" />
+
+                    <!-- Recycler View List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_admin_reports"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                    <!-- Empty State -->
+                    <TextView
+                        android:id="@+id/tv_admin_reports_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:gravity="center"
+                        android:text="No reports match this query."
+                        android:textColor="#9CA3AF"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

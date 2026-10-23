@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="12px"
+        android:paddingHorizontal="4dp">
+
+        <!-- User Column (Avatar + Name + Email) -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_user_avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="#1F2D42"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_nav_profile"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                app:tint="#F9FAFB" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Inspector Mthembu"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="admin@campusfind.ac.za"
+                    android:textColor="#9CA3AF"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ID Column -->
+        <TextView
+            android:id="@+id/tv_user_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:text="ADM-88001"
+            android:textColor="#F9FAFB"
+            android:textSize="13sp" />
+
+        <!-- Department Column -->
+        <TextView
+            android:id="@+id/tv_user_dept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.8"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Campus Protection &amp; Security"
+            android:textColor="#D1D5DB"
+            android:textSize="12sp" />
+
+        <!-- Role Column -->
+        <TextView
+            android:id="@+id/tv_user_role"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.1"
+            android:background="@drawable/bg_rounded_pill"
+            android:backgroundTint="#2D2354"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="Admin"
+            android:textColor="#A78BFA"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <!-- Status Column -->
+        <TextView
+            android:id="@+id/tv_user_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:gravity="end"
+            android:text="✓ Active"
+            android:textColor="#00A884"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</layout>
