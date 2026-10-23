@@ -5,13 +5,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#080C14"
+        android:background="@color/color_background"
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingBottom="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="42dp">
 
             <!-- Top Header Bar -->
             <com.google.android.material.card.MaterialCardView
@@ -138,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintTop_toBottomOf="@id/btn_theme_toggle"
                 app:strokeColor="#1A263B"
@@ -229,6 +231,9 @@
                         app:boxCornerRadiusTopEnd="14dp"
                         app:boxCornerRadiusTopStart="14dp"
                         app:boxStrokeColor="#1D2A3F"
+                        app:endIconDrawable="@android:drawable/ic_btn_speak_now"
+                        app:endIconMode="custom"
+                        app:endIconTint="#00A884"
                         app:hintTextColor="#6B7280"
                         app:startIconDrawable="@android:drawable/ic_menu_search"
                         app:startIconTint="#9CA3AF">
@@ -359,7 +364,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="20dp"
                 app:layout_constraintTop_toBottomOf="@id/ll_quick_actions"
                 app:strokeColor="#1A263B"
@@ -422,7 +427,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="20dp"
-                app:cardBackgroundColor="#0E1524"
+                app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card_recent_activity"

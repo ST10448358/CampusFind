@@ -1,6 +1,8 @@
 package com.segotlo.campusfindapp.ui.xml
 
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListPopupWindow
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,6 +28,17 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var reportAdapter: ReportAdapter
+
+    private val speechResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+            if (!spokenText.isNullOrEmpty()) {
+                binding.etHomeSearch.setText(spokenText)
+                binding.etHomeSearch.setSelection(spokenText.length)
+                Toast.makeText(requireContext(), "Voice search: \"$spokenText\"", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +81,18 @@ class HomeFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
+        binding.tilHomeSearch.setEndIconOnClickListener {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to search campus reports...")
+            }
+            try {
+                speechResultLauncher.launch(intent)
+            } catch (_: Throwable) {
+                Toast.makeText(requireContext(), "Speech recognition not available on this device", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.cardProfileSearch.setOnClickListener {
             findNavController().navigate(R.id.profileFragment)
         }
@@ -94,9 +120,10 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnThemeToggle.setOnClickListener {
-            val isDark = MockRepository.isDarkTheme.value
-            MockRepository.setDarkTheme(!isDark)
-            binding.btnThemeToggle.text = if (!isDark) "Dark" else "Light"
+            val current = MockRepository.isDarkTheme.value
+            MockRepository.setDarkTheme(!current)
+            binding.btnThemeToggle.text = if (!current) "Dark" else "Light"
+            Toast.makeText(requireContext(), if (!current) "Dark Mode" else "Light Mode", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -115,7 +142,7 @@ class HomeFragment : Fragment() {
         } else {
             binding.tvNoReports.visibility = View.GONE
             binding.rvHomeReports.visibility = View.VISIBLE
-            reportAdapter.submitList(filtered)
+            reportAdapter.submitList(filtered.take(3))
         }
     }
 
@@ -148,15 +175,15 @@ class HomeFragment : Fragment() {
         popup.setOnItemClickListener { _, _, position, _ ->
             when (position) {
                 0 -> {
-                    binding.tvHomeTagline.text = "| Find what you lost. Return wh..."
+                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("en"))
                     binding.btnLanguageDropdown.text = "EN"
                 }
                 1 -> {
-                    binding.tvHomeTagline.text = "| Bona se o se latlhegetsweng..."
+                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("tn"))
                     binding.btnLanguageDropdown.text = "TN"
                 }
                 2 -> {
-                    binding.tvHomeTagline.text = "| Thola eng okulahlekileyo..."
+                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("zu"))
                     binding.btnLanguageDropdown.text = "ZU"
                 }
             }
