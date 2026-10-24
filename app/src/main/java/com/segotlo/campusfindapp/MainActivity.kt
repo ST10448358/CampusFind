@@ -57,8 +57,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment,
                 R.id.searchFragment,
                 R.id.myReportsFragment,
-                R.id.notificationsFragment,
-                R.id.profileFragment -> {
+                R.id.notificationsFragment -> {
                     if (binding.bottomNavigation.tag != "student") {
                         binding.bottomNavigation.tag = "student"
                         binding.bottomNavigation.menu.clear()
@@ -67,6 +66,16 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigation.visibility = View.VISIBLE
                     binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
                     binding.btnFloatingAskAssistant.visibility = View.VISIBLE
+                }
+                R.id.profileFragment -> {
+                    if (binding.bottomNavigation.tag != "student") {
+                        binding.bottomNavigation.tag = "student"
+                        binding.bottomNavigation.menu.clear()
+                        binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu)
+                    }
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                    binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+                    binding.btnFloatingAskAssistant.visibility = View.GONE
                 }
                 R.id.adminDashboardFragment,
                 R.id.adminReportsFragment,

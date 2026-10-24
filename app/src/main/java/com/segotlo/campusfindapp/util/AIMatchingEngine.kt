@@ -3,6 +3,10 @@ package com.segotlo.campusfindapp.util
 import com.segotlo.campusfindapp.data.Report
 import com.segotlo.campusfindapp.data.ReportStatus
 import com.segotlo.campusfindapp.data.ReportType
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 object AIMatchingEngine {
 
@@ -22,33 +26,61 @@ object AIMatchingEngine {
         var bestReasoning = ""
 
         for (candidate in candidates) {
+            val newTitleLower = newReport.title.lowercase()
+            val candidateTitleLower = candidate.title.lowercase()
+
+            // Disallow obvious mismatched object pairs
+            val isConflict = (newTitleLower.contains("phone") && candidateTitleLower.contains("charger")) ||
+                             (newTitleLower.contains("charger") && candidateTitleLower.contains("phone")) ||
+                             (newTitleLower.contains("headphones") && candidateTitleLower.contains("charger")) ||
+                             (newTitleLower.contains("charger") && candidateTitleLower.contains("headphones")) ||
+                             (newTitleLower.contains("laptop") && candidateTitleLower.contains("phone")) ||
+                             (newTitleLower.contains("phone") && candidateTitleLower.contains("laptop")) ||
+                             (newTitleLower.contains("id") && candidateTitleLower.contains("charger")) ||
+                             (newTitleLower.contains("charger") && candidateTitleLower.contains("id"))
+
+            if (isConflict) {
+                continue
+            }
+
             var score = 0
             val reasons = mutableListOf<String>()
 
-            // 1. Category match (High weight)
-            if (newReport.category == candidate.category) {
+            // 1. GPS Map Proximity (Haversine distance in meters)
+            val distanceMeters = calculateDistanceMeters(
+                newReport.effectiveLatitude, newReport.effectiveLongitude,
+                candidate.effectiveLatitude, candidate.effectiveLongitude
+            )
+            
+            if (distanceMeters <= 500.0) {
                 score += 45
-                reasons.add("Exact category match (${newReport.category.name.lowercase().replace('_', ' ')})")
-            }
-
-            // 2. Location match (Medium weight)
-            if (newReport.location == candidate.location) {
+                reasons.add("Close GPS proximity (${distanceMeters.toInt()}m apart)")
+            } else if (distanceMeters <= 2000.0) {
                 score += 30
-                reasons.add("Same campus location (${newReport.location.name.lowercase().replace('_', ' ')})")
+                reasons.add("Same campus area")
+            } else {
+                score += 15
+                reasons.add("University match")
             }
 
-            // 3. Keyword text similarity (Title & Description)
+            // 2. Title & Description Keyword Overlap (Required for high confidence)
+            val newTitleWords = newReport.title.lowercase().split("\\s+".toRegex()).toSet()
+            val candidateTitleWords = candidate.title.lowercase().split("\\s+".toRegex()).toSet()
+            val titleOverlap = newTitleWords.intersect(candidateTitleWords).filter { it.length > 2 }
+
             val newWords = (newReport.title + " " + newReport.description).lowercase().split("\\s+".toRegex()).toSet()
             val candidateWords = (candidate.title + " " + candidate.description).lowercase().split("\\s+".toRegex()).toSet()
-            val intersection = newWords.intersect(candidateWords)
-            // filter out common stop words
-            val meaningfulOverlap = intersection.filter { it.length > 3 }
-            if (meaningfulOverlap.isNotEmpty()) {
+            val descOverlap = newWords.intersect(candidateWords).filter { it.length > 2 }
+
+            if (titleOverlap.isNotEmpty()) {
+                score += 45
+                reasons.add("Matching title (${titleOverlap.joinToString(", ")})")
+            } else if (descOverlap.isNotEmpty()) {
                 score += 25
-                reasons.add("Keyword overlap (${meaningfulOverlap.take(2).joinToString(", ")})")
+                reasons.add("Keyword overlap")
             }
 
-            if (score > highestScore && score >= 50) {
+            if (score > highestScore && score >= 45) {
                 highestScore = score.coerceAtMost(98)
                 bestCandidate = candidate
                 bestReasoning = reasons.joinToString(" • ")
@@ -66,4 +98,17 @@ object AIMatchingEngine {
             null
         }
     }
+
+    private fun calculateDistanceMeters(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val earthRadius = 6371000.0 // meters
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2) * sin(dLat / 2) +
+                cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                sin(dLon / 2) * sin(dLon / 2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return earthRadius * c
+    }
+
+    private fun Double.format(digits: Int) = java.lang.String.format(java.util.Locale.getDefault(), "%.${digits}f", this)
 }

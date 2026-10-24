@@ -187,6 +187,10 @@ object MockRepository {
         }
     }
 
+    suspend fun linkReports(reportId1: String, reportId2: String): Result<Unit> {
+        return reportRepository.linkReports(reportId1, reportId2)
+    }
+
     fun matchReports(lostReport: Report, foundReport: Report) {
         scope.launch {
             reportRepository.linkReports(lostReport.id, foundReport.id)

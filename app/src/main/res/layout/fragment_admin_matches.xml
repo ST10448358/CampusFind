@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="16dp"
+            android:paddingBottom="96dp"
             android:paddingHorizontal="16dp"
             android:paddingTop="42dp">
 
@@ -112,6 +112,20 @@
                                 android:text="As an administrator, review potential lost-and-found matches side-by-side. Confirm legitimate matches to trigger student notification and assign handover desks."
                                 android:textColor="#9CA3AF"
                                 android:textSize="12sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_manual_link_reports"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_marginTop="12dp"
+                                android:paddingHorizontal="12dp"
+                                android:text="🔗 Manual Link Reports"
+                                android:textColor="#00A884"
+                                android:textSize="11sp"
+                                app:backgroundTint="#101726"
+                                app:cornerRadius="10dp"
+                                app:strokeColor="#133833" />
                         </LinearLayout>
 
                         <!-- Right Default Handover Card -->

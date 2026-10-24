@@ -70,69 +70,9 @@
                 android:textColor="#6B7280"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
-                app:layout_constraintEnd_toStartOf="@id/btn_theme_toggle"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_home_brand_find"
                 app:layout_constraintTop_toTopOf="@id/tv_home_brand" />
-
-            <!-- Light/Dark Mode Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_theme_toggle"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:paddingHorizontal="10dp"
-                android:text="@string/light_mode"
-                android:textColor="#F9FAFB"
-                android:textSize="11sp"
-                app:backgroundTint="#0E1524"
-                app:cornerRadius="8dp"
-                app:icon="@android:drawable/ic_menu_compass"
-                app:iconSize="14dp"
-                app:iconTint="#FBBC05"
-                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
-                app:layout_constraintEnd_toStartOf="@id/btn_language_dropdown"
-                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
-                app:strokeColor="#1A263B" />
-
-            <!-- Language Dropdown Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_language_dropdown"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginStart="4dp"
-                android:paddingHorizontal="10dp"
-                android:text="EN"
-                android:textColor="#F9FAFB"
-                android:textSize="11sp"
-                app:backgroundTint="#0E1524"
-                app:cornerRadius="8dp"
-                app:icon="@android:drawable/ic_menu_mapmode"
-                app:iconSize="14dp"
-                app:iconTint="#00A884"
-                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
-                app:layout_constraintEnd_toStartOf="@id/btn_alerts_bell"
-                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
-                app:strokeColor="#1A263B" />
-
-            <!-- Alerts Bell Icon Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_alerts_bell"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="4dp"
-                android:padding="0dp"
-                app:backgroundTint="#0E1524"
-                app:cornerRadius="8dp"
-                app:icon="@android:drawable/ic_popup_reminder"
-                app:iconGravity="textStart"
-                app:iconSize="16dp"
-                app:iconTint="#F9FAFB"
-                app:layout_constraintBottom_toBottomOf="@id/tv_home_brand"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_home_brand"
-                app:strokeColor="#1A263B" />
 
             <!-- User Profile & Search Card -->
             <com.google.android.material.card.MaterialCardView
@@ -142,7 +82,7 @@
                 android:layout_marginTop="20dp"
                 app:cardBackgroundColor="@color/color_surface"
                 app:cardCornerRadius="20dp"
-                app:layout_constraintTop_toBottomOf="@id/btn_theme_toggle"
+                app:layout_constraintTop_toBottomOf="@id/card_top_header"
                 app:strokeColor="#1A263B"
                 app:strokeWidth="1dp">
 
@@ -217,34 +157,7 @@
                             android:backgroundTint="#10B981" />
                     </FrameLayout>
 
-                    <!-- Embedded Search Bar -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_home_search"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/search_hint"
-                        app:boxBackgroundColor="#101726"
-                        app:boxCornerRadiusBottomEnd="14dp"
-                        app:boxCornerRadiusBottomStart="14dp"
-                        app:boxCornerRadiusTopEnd="14dp"
-                        app:boxCornerRadiusTopStart="14dp"
-                        app:boxStrokeColor="#1D2A3F"
-                        app:endIconDrawable="@android:drawable/ic_btn_speak_now"
-                        app:endIconMode="custom"
-                        app:endIconTint="#00A884"
-                        app:hintTextColor="#6B7280"
-                        app:startIconDrawable="@android:drawable/ic_menu_search"
-                        app:startIconTint="#9CA3AF">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_home_search"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="#F9FAFB"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.google.android.material.card.MaterialCardView>

@@ -11,18 +11,7 @@ import java.util.*
 class FirebaseNotificationRepository : NotificationRepository {
     private val firestore: FirebaseFirestore? = try { FirebaseFirestore.getInstance() } catch (_: Throwable) { null }
     private val userNotificationFlows = mutableMapOf<String, MutableStateFlow<List<AppNotification>>>()
-    private val globalNotifications = MutableStateFlow<List<AppNotification>>(
-        listOf(
-            AppNotification(
-                id = "notif_1",
-                userId = "student_user_id",
-                title = "Welcome to CampusFind!",
-                message = "Report lost items or help return found items on campus.",
-                timestamp = Date(),
-                isRead = false
-            )
-        )
-    )
+    private val globalNotifications = MutableStateFlow<List<AppNotification>>(emptyList())
 
     override fun getNotificationsForUser(userId: String): StateFlow<List<AppNotification>> {
         val flow = userNotificationFlows.getOrPut(userId) { 
