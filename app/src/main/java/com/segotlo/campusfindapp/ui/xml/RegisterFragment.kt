@@ -66,6 +66,16 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            val criteria = com.segotlo.campusfindapp.util.PasswordValidator.validate(password)
+            if (!criteria.isValid) {
+                Toast.makeText(
+                    requireContext(),
+                    "Password must be at least 8 characters with 1 uppercase, 1 lowercase, 1 digit, and 1 special character.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
             if (!binding.cbTerms.isChecked) {
                 Toast.makeText(requireContext(), "Please accept terms & conditions", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

@@ -13,10 +13,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.segotlo.campusfindapp.R
 import com.segotlo.campusfindapp.data.MockRepository
 import com.segotlo.campusfindapp.data.Report
@@ -53,14 +56,18 @@ class AdminReportsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ReportAdapter { report ->
-            // Handle report click / moderation
+            showManualMatchDialog(report)
         }
         binding.rvAdminReports.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAdminReports.adapter = adapter
 
-        lifecycleScope.launch {
-            MockRepository.reports.collectLatest { reports ->
-                updateChipsAndList(reports)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.reports.collectLatest { reports ->
+                    if (_binding != null) {
+                        updateChipsAndList(reports)
+                    }
+                }
             }
         }
 
@@ -91,6 +98,116 @@ class AdminReportsFragment : Fragment() {
         binding.chipReturned.setOnClickListener { selectFilter(4) }
     }
 
+    private fun showManualMatchDialog(initialReport: Report? = null) {
+        val dialogBinding = com.segotlo.campusfindapp.databinding.DialogManualLinkBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        val allReports = MockRepository.reports.value
+        val openReports = allReports.filter { it.status == ReportStatus.OPEN || it.status == ReportStatus.MATCH_SUGGESTED }
+
+        if (openReports.isEmpty()) {
+            dialogBinding.rvManualLinkReports.visibility = View.GONE
+            dialogBinding.llManualLinkEmpty.visibility = View.VISIBLE
+        } else {
+            dialogBinding.rvManualLinkReports.visibility = View.VISIBLE
+            dialogBinding.llManualLinkEmpty.visibility = View.GONE
+        }
+
+        val adapter = ManualLinkAdapter(
+            onSelectionChanged = { selectedList ->
+                val count = selectedList.size
+                dialogBinding.btnConfirmManualLink.text = "Link Selected Reports ($count/2)"
+                dialogBinding.btnConfirmManualLink.isEnabled = count == 2
+            },
+            onViewDetails = { report ->
+                showReportDetailDialog(report)
+            }
+        )
+
+        dialogBinding.rvManualLinkReports.layoutManager = LinearLayoutManager(requireContext())
+        dialogBinding.rvManualLinkReports.adapter = adapter
+        adapter.submitList(openReports)
+
+        dialogBinding.btnConfirmManualLink.isEnabled = false
+
+        dialogBinding.etDialogSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s?.toString()?.trim().orEmpty()
+                val filtered = if (query.isEmpty()) {
+                    openReports
+                } else {
+                    openReports.filter {
+                        it.title.contains(query, ignoreCase = true) ||
+                        it.referenceCode.contains(query, ignoreCase = true) ||
+                        it.userDisplayName.contains(query, ignoreCase = true)
+                    }
+                }
+                adapter.submitList(filtered)
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        dialogBinding.btnCloseDialog.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnCancelManualLink.setOnClickListener { dialog.dismiss() }
+
+        dialogBinding.btnConfirmManualLink.setOnClickListener {
+            val selected = adapter.getSelectedReports()
+            if (selected.size != 2) {
+                Toast.makeText(requireContext(), "Please select exactly 2 reports to link", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val lostReport = selected.find { it.type == ReportType.LOST }
+            val foundReport = selected.find { it.type == ReportType.FOUND }
+
+            if (lostReport == null || foundReport == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please select 1 LOST report and 1 FOUND report to link.",
+                    Toast.LENGTH_LONG
+                ).show()
+                return@setOnClickListener
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                val res = MockRepository.linkReports(lostReport.id, foundReport.id)
+                if (res.isSuccess) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Reports '${lostReport.title}' & '${foundReport.title}' successfully linked!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(requireContext(), "Failed to link reports", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showReportDetailDialog(report: Report) {
+        val dialogBinding = com.segotlo.campusfindapp.databinding.DialogReportDetailBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.tvDetailTitle.text = report.title
+        dialogBinding.tvDetailDesc.text = report.description
+        dialogBinding.tvDetailLocation.text = "📍 ${report.institution} • ${report.location.name}"
+        dialogBinding.tvDetailContact.text = "Reporter: ${report.userDisplayName} (${report.userEmail})"
+
+        dialogBinding.btnDetailClose.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnDetailClaim.text = "Close Preview"
+        dialogBinding.btnDetailClaim.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
+    }
+
     private fun selectFilter(index: Int) {
         selectedFilter = index
         val chips = listOf(binding.chipAll, binding.chipPending, binding.chipApprovedLost, binding.chipApprovedFound, binding.chipReturned)
@@ -107,6 +224,7 @@ class AdminReportsFragment : Fragment() {
     }
 
     private fun updateChipsAndList(reports: List<Report>) {
+        if (_binding == null) return
         val total = reports.size
         val pending = reports.count { it.status == ReportStatus.MATCH_SUGGESTED || it.status == ReportStatus.UNDER_VERIFICATION }
         val approvedLost = reports.count { it.type == ReportType.LOST && it.status == ReportStatus.OPEN }

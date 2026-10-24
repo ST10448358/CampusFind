@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.segotlo.campusfindapp.data.MockRepository
@@ -41,15 +43,18 @@ class MyReportsFragment : Fragment() {
         binding.rvMyReports.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMyReports.adapter = reportAdapter
 
-        lifecycleScope.launch {
-            MockRepository.currentUser.collectLatest { user ->
-                if (user != null) {
-                    MockRepository.getReportsByUser(user.id).collectLatest { userReports ->
-                        applyTabFilter(userReports)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.currentUser.collectLatest { user ->
+                    val b = _binding ?: return@collectLatest
+                    if (user != null) {
+                        MockRepository.getReportsByUser(user.id).collectLatest { userReports ->
+                            applyTabFilter(userReports)
+                        }
+                    } else {
+                        b.tvMyReportsEmpty.visibility = View.VISIBLE
+                        b.rvMyReports.visibility = View.GONE
                     }
-                } else {
-                    binding.tvMyReportsEmpty.visibility = View.VISIBLE
-                    binding.rvMyReports.visibility = View.GONE
                 }
             }
         }
@@ -67,7 +72,8 @@ class MyReportsFragment : Fragment() {
     }
 
     private fun applyTabFilter(reports: List<Report>) {
-        val filtered = when (binding.tabsMyReports.selectedTabPosition) {
+        val b = _binding ?: return
+        val filtered = when (b.tabsMyReports.selectedTabPosition) {
             1 -> reports.filter { it.type == ReportType.LOST }
             2 -> reports.filter { it.type == ReportType.FOUND }
             3 -> reports.filter { it.status == ReportStatus.CLAIMED || it.status == ReportStatus.RETURNED }
@@ -75,11 +81,11 @@ class MyReportsFragment : Fragment() {
         }
 
         if (filtered.isEmpty()) {
-            binding.tvMyReportsEmpty.visibility = View.VISIBLE
-            binding.rvMyReports.visibility = View.GONE
+            b.tvMyReportsEmpty.visibility = View.VISIBLE
+            b.rvMyReports.visibility = View.GONE
         } else {
-            binding.tvMyReportsEmpty.visibility = View.GONE
-            binding.rvMyReports.visibility = View.VISIBLE
+            b.tvMyReportsEmpty.visibility = View.GONE
+            b.rvMyReports.visibility = View.VISIBLE
             reportAdapter.submitList(filtered)
         }
     }
@@ -97,11 +103,49 @@ class MyReportsFragment : Fragment() {
         val pinInfo = if (report.matchedWithId != null) "\n\n🔐 Secure Handover PIN: ${report.handoverPin}\n📍 Handover Desk: Campus Main Gate Desk" else ""
         dialogBinding.tvDetailContact.text = "Status: ${report.status.name}$pinInfo"
 
-        dialogBinding.btnDetailClose.setOnClickListener { dialog.dismiss() }
-        dialogBinding.btnDetailClaim.setOnClickListener {
-            Toast.makeText(requireContext(), "Report status: ${report.status.name}", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
+        if (report.matchedWithId != null) {
+            dialogBinding.btnDetailClaim.text = "View Handover PIN & Exchange Location"
+            dialogBinding.btnDetailClaim.setOnClickListener {
+                dialog.dismiss()
+                showHandoverInfoDialog(report)
+            }
+        } else {
+            dialogBinding.btnDetailClaim.setOnClickListener {
+                Toast.makeText(requireContext(), "Report status: ${report.status.name}", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
         }
+
+        dialogBinding.btnDetailClose.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
+    }
+
+    private fun showHandoverInfoDialog(report: Report) {
+        val dialogBinding = com.segotlo.campusfindapp.databinding.DialogHandoverInfoBinding.inflate(layoutInflater)
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.tvHandoverReportTitle.text = report.title
+        dialogBinding.tvHandoverRefCode.text = "${report.referenceCode} • Verification Info"
+        dialogBinding.tvHandoverStatus.text = report.status.name
+
+        val formattedPin = report.handoverPin.toCharArray().joinToString(" ")
+        dialogBinding.tvHandoverPin.text = formattedPin
+
+        dialogBinding.tvHandoverLocation.text = "Campus Main Gate Desk • ${report.location.name}"
+        dialogBinding.tvHandoverInstitution.text = report.institution
+
+        dialogBinding.btnCopyPin.setOnClickListener {
+            val clipboard = requireContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Handover PIN", report.handoverPin)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(requireContext(), "PIN ${report.handoverPin} copied to clipboard!", Toast.LENGTH_SHORT).show()
+        }
+
+        dialogBinding.btnCloseHandoverDialog.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnDoneHandover.setOnClickListener { dialog.dismiss() }
 
         dialog.show()
     }

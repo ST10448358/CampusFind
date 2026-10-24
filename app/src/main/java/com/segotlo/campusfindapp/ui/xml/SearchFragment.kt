@@ -12,7 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.segotlo.campusfindapp.R
@@ -63,9 +65,13 @@ class SearchFragment : Fragment() {
         binding.rvSearchResults.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSearchResults.adapter = reportAdapter
 
-        lifecycleScope.launch {
-            MockRepository.reports.collectLatest {
-                applyFilters()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.reports.collectLatest {
+                    if (_binding != null) {
+                        applyFilters()
+                    }
+                }
             }
         }
 
@@ -103,10 +109,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun applyFilters() {
-        val query = binding.etSearchQuery.text.toString().trim()
+        val b = _binding ?: return
+        val query = b.etSearchQuery.text.toString().trim()
         val allReports = MockRepository.reports.value
 
-        val typeFilter = when (binding.tabsSearchType.selectedTabPosition) {
+        val typeFilter = when (b.tabsSearchType.selectedTabPosition) {
             1 -> ReportType.LOST
             2 -> ReportType.FOUND
             else -> null
@@ -121,14 +128,14 @@ class SearchFragment : Fragment() {
                     r.institution.contains(query, ignoreCase = true))
         }
 
-        binding.tvActiveFilterSummary.text = "Showing: ${selectedCategory?.name ?: "All Categories"} • ${selectedLocation?.name ?: "All Locations"}"
+        b.tvActiveFilterSummary.text = "Showing: ${selectedCategory?.name ?: "All Categories"} • ${selectedLocation?.name ?: "All Locations"}"
 
         if (filtered.isEmpty()) {
-            binding.tvSearchEmpty.visibility = View.VISIBLE
-            binding.rvSearchResults.visibility = View.GONE
+            b.tvSearchEmpty.visibility = View.VISIBLE
+            b.rvSearchResults.visibility = View.GONE
         } else {
-            binding.tvSearchEmpty.visibility = View.GONE
-            binding.rvSearchResults.visibility = View.VISIBLE
+            b.tvSearchEmpty.visibility = View.GONE
+            b.rvSearchResults.visibility = View.VISIBLE
             reportAdapter.submitList(filtered)
         }
     }

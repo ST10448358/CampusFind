@@ -8,7 +8,9 @@ import android.widget.ListPopupWindow
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.segotlo.campusfindapp.R
 import com.segotlo.campusfindapp.data.MockRepository
@@ -41,19 +43,24 @@ class NotificationsFragment : Fragment() {
             else -> "EN"
         }
 
-        notifAdapter = NotificationAdapter()
+        notifAdapter = NotificationAdapter { notification ->
+            handleNotificationClick(notification)
+        }
         binding.rvNotifications.layoutManager = LinearLayoutManager(requireContext())
         binding.rvNotifications.adapter = notifAdapter
 
-        lifecycleScope.launch {
-            MockRepository.notifications.collectLatest { list ->
-                if (list.isEmpty()) {
-                    binding.cardNotifEmpty.visibility = View.VISIBLE
-                    binding.rvNotifications.visibility = View.GONE
-                } else {
-                    binding.cardNotifEmpty.visibility = View.GONE
-                    binding.rvNotifications.visibility = View.VISIBLE
-                    notifAdapter.submitList(list)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.notifications.collectLatest { list ->
+                    val b = _binding ?: return@collectLatest
+                    if (list.isEmpty()) {
+                        b.cardNotifEmpty.visibility = View.VISIBLE
+                        b.rvNotifications.visibility = View.GONE
+                    } else {
+                        b.cardNotifEmpty.visibility = View.GONE
+                        b.rvNotifications.visibility = View.VISIBLE
+                        notifAdapter.submitList(list)
+                    }
                 }
             }
         }
@@ -83,6 +90,53 @@ class NotificationsFragment : Fragment() {
             }
             popup.show()
         }
+    }
+
+    private fun handleNotificationClick(notification: com.segotlo.campusfindapp.data.AppNotification) {
+        MockRepository.markNotificationAsRead(notification.id)
+
+        val reportsList = MockRepository.reports.value
+        val report = if (notification.reportId != null) {
+            reportsList.find { it.id == notification.reportId }
+        } else {
+            val user = MockRepository.currentUser.value
+            if (user != null) reportsList.find { it.userId == user.id } else null
+        } ?: reportsList.firstOrNull()
+
+        if (report != null) {
+            showHandoverInfoDialog(report)
+        } else {
+            android.widget.Toast.makeText(requireContext(), notification.message, android.widget.Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showHandoverInfoDialog(report: com.segotlo.campusfindapp.data.Report) {
+        val dialogBinding = com.segotlo.campusfindapp.databinding.DialogHandoverInfoBinding.inflate(layoutInflater)
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.tvHandoverReportTitle.text = report.title
+        dialogBinding.tvHandoverRefCode.text = "${report.referenceCode} • Verification Info"
+        dialogBinding.tvHandoverStatus.text = report.status.name
+
+        val formattedPin = report.handoverPin.toCharArray().joinToString(" ")
+        dialogBinding.tvHandoverPin.text = formattedPin
+
+        dialogBinding.tvHandoverLocation.text = "Campus Main Gate Desk • ${report.location.name}"
+        dialogBinding.tvHandoverInstitution.text = report.institution
+
+        dialogBinding.btnCopyPin.setOnClickListener {
+            val clipboard = requireContext().getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Handover PIN", report.handoverPin)
+            clipboard.setPrimaryClip(clip)
+            android.widget.Toast.makeText(requireContext(), "PIN ${report.handoverPin} copied to clipboard!", android.widget.Toast.LENGTH_SHORT).show()
+        }
+
+        dialogBinding.btnCloseHandoverDialog.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnDoneHandover.setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

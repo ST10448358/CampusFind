@@ -9,7 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.segotlo.campusfindapp.R
@@ -61,32 +63,38 @@ class ProfileFragment : Fragment() {
         binding.radioLangTn.isChecked = currentLang == "tn"
         binding.radioLangZu.isChecked = currentLang == "zu"
 
-        lifecycleScope.launch {
-            MockRepository.currentUser.collectLatest { user ->
-                if (user != null) {
-                    binding.tvProfileName.text = "${user.firstName} ${user.lastName}"
-                    binding.tvProfileEmail.text = user.email
-                    binding.tvProfileStudentNum.text = "Student #${user.studentStaffNumber}"
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.currentUser.collectLatest { user ->
+                    val b = _binding ?: return@collectLatest
+                    if (user != null) {
+                        b.tvProfileName.text = "${user.firstName} ${user.lastName}"
+                        b.tvProfileEmail.text = user.email
+                        b.tvProfileStudentNum.text = "Student #${user.studentStaffNumber}"
 
-                    binding.switchPushNotif.isChecked = user.pushNotificationsEnabled
-                    binding.switchMatchAlerts.isChecked = user.matchAlertsEnabled
-                    binding.switchReportUpdates.isChecked = user.reportUpdatesEnabled
+                        b.switchPushNotif.isChecked = user.pushNotificationsEnabled
+                        b.switchMatchAlerts.isChecked = user.matchAlertsEnabled
+                        b.switchReportUpdates.isChecked = user.reportUpdatesEnabled
+                    }
                 }
             }
         }
 
-        lifecycleScope.launch {
-            MockRepository.reports.collectLatest { reports ->
-                val user = MockRepository.currentUser.value
-                val userReports = if (user != null) reports.filter { it.userId == user.id } else reports
-                
-                val lostCount = userReports.count { it.type == ReportType.LOST }
-                val foundCount = userReports.count { it.type == ReportType.FOUND }
-                val returnedCount = userReports.count { it.status == ReportStatus.RETURNED || it.status == ReportStatus.CLAIMED }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.reports.collectLatest { reports ->
+                    val b = _binding ?: return@collectLatest
+                    val user = MockRepository.currentUser.value
+                    val userReports = if (user != null) reports.filter { it.userId == user.id } else reports
+                    
+                    val lostCount = userReports.count { it.type == ReportType.LOST }
+                    val foundCount = userReports.count { it.type == ReportType.FOUND }
+                    val returnedCount = userReports.count { it.status == ReportStatus.RETURNED || it.status == ReportStatus.CLAIMED }
 
-                binding.tvStatLostCount.text = lostCount.toString()
-                binding.tvStatFoundCount.text = foundCount.toString()
-                binding.tvStatReturnedCount.text = returnedCount.toString()
+                    b.tvStatLostCount.text = lostCount.toString()
+                    b.tvStatFoundCount.text = foundCount.toString()
+                    b.tvStatReturnedCount.text = returnedCount.toString()
+                }
             }
         }
 

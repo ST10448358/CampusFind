@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.segotlo.campusfindapp.R
@@ -40,15 +42,18 @@ class AdminFragment : Fragment() {
         binding.rvAdminReports.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAdminReports.adapter = reportAdapter
 
-        lifecycleScope.launch {
-            MockRepository.reports.collectLatest { reports ->
-                binding.tvStatTotalReports.text = reports.size.toString()
-                val pending = reports.count { it.status == ReportStatus.MATCH_SUGGESTED || it.status == ReportStatus.UNDER_VERIFICATION }
-                binding.tvStatPendingMatches.text = pending.toString()
-                val claimed = reports.count { it.status == ReportStatus.CLAIMED || it.status == ReportStatus.RETURNED }
-                binding.tvStatClaimed.text = claimed.toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.reports.collectLatest { reports ->
+                    val b = _binding ?: return@collectLatest
+                    b.tvStatTotalReports.text = reports.size.toString()
+                    val pending = reports.count { it.status == ReportStatus.MATCH_SUGGESTED || it.status == ReportStatus.UNDER_VERIFICATION }
+                    b.tvStatPendingMatches.text = pending.toString()
+                    val claimed = reports.count { it.status == ReportStatus.CLAIMED || it.status == ReportStatus.RETURNED }
+                    b.tvStatClaimed.text = claimed.toString()
 
-                reportAdapter.submitList(reports)
+                    reportAdapter.submitList(reports)
+                }
             }
         }
 

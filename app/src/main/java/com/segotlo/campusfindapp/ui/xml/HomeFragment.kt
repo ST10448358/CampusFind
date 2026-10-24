@@ -1,24 +1,18 @@
 package com.segotlo.campusfindapp.ui.xml
 
-import android.content.Intent
 import android.os.Bundle
-import android.speech.RecognizerIntent
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListPopupWindow
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.segotlo.campusfindapp.R
 import com.segotlo.campusfindapp.data.MockRepository
 import com.segotlo.campusfindapp.data.Report
-import com.segotlo.campusfindapp.data.ReportType
 import com.segotlo.campusfindapp.databinding.FragmentHomeBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,17 +22,6 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var reportAdapter: ReportAdapter
-
-    private val speechResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == android.app.Activity.RESULT_OK) {
-            val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
-            if (!spokenText.isNullOrEmpty()) {
-                binding.etHomeSearch.setText(spokenText)
-                binding.etHomeSearch.setSelection(spokenText.length)
-                Toast.makeText(requireContext(), "Voice search: \"$spokenText\"", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,38 +41,25 @@ class HomeFragment : Fragment() {
         binding.rvHomeReports.layoutManager = LinearLayoutManager(requireContext())
         binding.rvHomeReports.adapter = reportAdapter
 
-        lifecycleScope.launch {
-            MockRepository.currentUser.collectLatest { user ->
-                if (user != null) {
-                    binding.tvUsername.text = "${user.firstName} ${user.lastName}"
-                    binding.tvUserId.text = "ID: ${user.studentStaffNumber}"
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.currentUser.collectLatest { user ->
+                    val b = _binding ?: return@collectLatest
+                    if (user != null) {
+                        b.tvUsername.text = "${user.firstName} ${user.lastName}"
+                        b.tvUserId.text = "ID: ${user.studentStaffNumber}"
+                    }
                 }
             }
         }
 
-        lifecycleScope.launch {
-            MockRepository.reports.collectLatest { reports ->
-                filterReports(binding.etHomeSearch.text.toString(), reports)
-            }
-        }
-
-        binding.etHomeSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterReports(s.toString(), MockRepository.reports.value)
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        binding.tilHomeSearch.setEndIconOnClickListener {
-            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to search campus reports...")
-            }
-            try {
-                speechResultLauncher.launch(intent)
-            } catch (_: Throwable) {
-                Toast.makeText(requireContext(), "Speech recognition not available on this device", Toast.LENGTH_SHORT).show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.reports.collectLatest { reports ->
+                    if (_binding != null) {
+                        filterReports(reports)
+                    }
+                }
             }
         }
 
@@ -107,42 +77,20 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.reportItemFragment, bundle)
         }
 
-        binding.btnAlertsBell.setOnClickListener {
-            findNavController().navigate(R.id.notificationsFragment)
-        }
-
         binding.tvSeeAll.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
-
-        binding.btnLanguageDropdown.setOnClickListener { v ->
-            showLanguagePopup(v)
-        }
-
-        binding.btnThemeToggle.setOnClickListener {
-            val current = MockRepository.isDarkTheme.value
-            MockRepository.setDarkTheme(!current)
-            binding.btnThemeToggle.text = if (!current) "Dark" else "Light"
-            Toast.makeText(requireContext(), if (!current) "Dark Mode" else "Light Mode", Toast.LENGTH_SHORT).show()
-        }
     }
 
-    private fun filterReports(query: String, reports: List<Report>) {
-        val filtered = if (query.isBlank()) reports else {
-            reports.filter {
-                it.title.contains(query, ignoreCase = true) ||
-                it.description.contains(query, ignoreCase = true) ||
-                it.institution.contains(query, ignoreCase = true)
-            }
-        }
-
-        if (filtered.isEmpty()) {
-            binding.tvNoReports.visibility = View.VISIBLE
-            binding.rvHomeReports.visibility = View.GONE
+    private fun filterReports(reports: List<Report>) {
+        val b = _binding ?: return
+        if (reports.isEmpty()) {
+            b.tvNoReports.visibility = View.VISIBLE
+            b.rvHomeReports.visibility = View.GONE
         } else {
-            binding.tvNoReports.visibility = View.GONE
-            binding.rvHomeReports.visibility = View.VISIBLE
-            reportAdapter.submitList(filtered.take(3))
+            b.tvNoReports.visibility = View.GONE
+            b.rvHomeReports.visibility = View.VISIBLE
+            reportAdapter.submitList(reports.take(3))
         }
     }
 
@@ -159,37 +107,11 @@ class HomeFragment : Fragment() {
 
         dialogBinding.btnDetailClose.setOnClickListener { dialog.dismiss() }
         dialogBinding.btnDetailClaim.setOnClickListener {
-            Toast.makeText(requireContext(), "Contact request sent to ${report.userDisplayName}!", Toast.LENGTH_LONG).show()
+            android.widget.Toast.makeText(requireContext(), "Contact request sent to ${report.userDisplayName}!", android.widget.Toast.LENGTH_LONG).show()
             dialog.dismiss()
         }
 
         dialog.show()
-    }
-
-    private fun showLanguagePopup(anchor: View) {
-        val languages = arrayOf("English (EN)", "Setswana (TN)", "isiZulu (ZU)")
-        val adapter = android.widget.ArrayAdapter(requireContext(), R.layout.item_dropdown_white_text, languages)
-        val popup = ListPopupWindow(requireContext())
-        popup.setAdapter(adapter)
-        popup.anchorView = anchor
-        popup.setOnItemClickListener { _, _, position, _ ->
-            when (position) {
-                0 -> {
-                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("en"))
-                    binding.btnLanguageDropdown.text = "EN"
-                }
-                1 -> {
-                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("tn"))
-                    binding.btnLanguageDropdown.text = "TN"
-                }
-                2 -> {
-                    androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(androidx.core.os.LocaleListCompat.forLanguageTags("zu"))
-                    binding.btnLanguageDropdown.text = "ZU"
-                }
-            }
-            popup.dismiss()
-        }
-        popup.show()
     }
 
     override fun onDestroyView() {

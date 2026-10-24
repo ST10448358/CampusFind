@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.segotlo.campusfindapp.R
@@ -39,9 +41,13 @@ class AdminUsersFragment : Fragment() {
         binding.rvAdminUsers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvAdminUsers.adapter = adapter
 
-        lifecycleScope.launch {
-            MockRepository.getAllUsers().collectLatest { users ->
-                updateUI(users)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                MockRepository.getAllUsers().collectLatest { users ->
+                    if (_binding != null) {
+                        updateUI(users)
+                    }
+                }
             }
         }
 
@@ -95,6 +101,7 @@ class AdminUsersFragment : Fragment() {
     }
 
     private fun updateUI(users: List<User>) {
+        if (_binding == null) return
         val total = users.size
         val students = users.count { it.role == UserRole.STUDENT }
         val admins = users.count { it.role == UserRole.ADMIN }
