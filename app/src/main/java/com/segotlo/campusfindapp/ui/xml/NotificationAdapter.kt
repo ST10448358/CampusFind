@@ -10,25 +10,33 @@ import com.segotlo.campusfindapp.databinding.ItemNotificationBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class NotificationAdapter : ListAdapter<AppNotification, NotificationAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
+class NotificationAdapter(
+    private val onNotificationClick: (AppNotification) -> Unit = {}
+) : ListAdapter<AppNotification, NotificationAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val binding = ItemNotificationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotificationViewHolder(binding)
+        return NotificationViewHolder(binding, onNotificationClick)
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class NotificationViewHolder(private val binding: ItemNotificationBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class NotificationViewHolder(
+        private val binding: ItemNotificationBinding,
+        private val onNotificationClick: (AppNotification) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: AppNotification) {
             binding.tvNotifTitle.text = item.title
             binding.tvNotifMessage.text = item.message
             val sdf = SimpleDateFormat("dd MMM, HH:mm", Locale.getDefault())
             binding.tvNotifTime.text = sdf.format(item.timestamp)
+
+            binding.root.setOnClickListener {
+                onNotificationClick(item)
+            }
         }
     }
 
