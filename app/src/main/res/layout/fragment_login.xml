@@ -185,18 +185,6 @@
                         app:iconTint="@null"
                         app:strokeColor="#1F2D42" />
 
-                    <!-- Quick Admin Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_use_admin"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/admin_quick_login"
-                        android:textColor="#818CF8"
-                        android:textSize="13sp" />
-
                     <!-- Register Nav Prompt -->
                     <LinearLayout
                         android:layout_width="wrap_content"

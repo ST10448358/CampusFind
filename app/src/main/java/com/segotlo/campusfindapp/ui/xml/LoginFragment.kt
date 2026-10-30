@@ -40,11 +40,6 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.registerFragment)
         }
 
-        binding.btnUseAdmin.setOnClickListener {
-            binding.etEmail.setText("admin@campusfind.ac.za")
-            binding.etPassword.setText("AdminPass123!")
-        }
-
         binding.btnSubmitLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
