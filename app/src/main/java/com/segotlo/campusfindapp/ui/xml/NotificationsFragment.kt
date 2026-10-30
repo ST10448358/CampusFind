@@ -36,7 +36,8 @@ class NotificationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentLang = AppCompatDelegate.getApplicationLocales().get(0)?.language ?: "en"
+        val locales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!locales.isEmpty) locales.get(0)?.language ?: "en" else "en"
         binding.btnNotifLang.text = when (currentLang) {
             "tn" -> "TN"
             "zu" -> "ZU"

@@ -29,7 +29,8 @@ class OpeningFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentLang = AppCompatDelegate.getApplicationLocales().get(0)?.language ?: "en"
+        val locales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!locales.isEmpty) locales.get(0)?.language ?: "en" else "en"
         val initialSelected = when (currentLang) {
             "tn" -> 1
             "zu" -> 2

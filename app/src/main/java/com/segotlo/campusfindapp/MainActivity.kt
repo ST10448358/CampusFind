@@ -37,10 +37,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
+            if (navController.currentDestination?.id == item.itemId) {
+                return@setOnItemSelectedListener true
+            }
+
+            val isStudentMenu = binding.bottomNavigation.tag == "student"
+            val rootId = if (isStudentMenu) R.id.homeFragment else R.id.adminDashboardFragment
+
+            if (item.itemId == rootId) {
+                val popped = navController.popBackStack(rootId, false)
+                if (!popped) {
+                    try {
+                        navController.navigate(rootId)
+                    } catch (_: Exception) {}
+                }
+                return@setOnItemSelectedListener true
+            }
+
             val navOptions = NavOptions.Builder()
                 .setLaunchSingleTop(true)
                 .setRestoreState(true)
-                .setPopUpTo(R.id.homeFragment, inclusive = false, saveState = true)
+                .setPopUpTo(rootId, inclusive = false, saveState = true)
                 .build()
 
             try {

@@ -64,7 +64,12 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardProfileSearch.setOnClickListener {
-            findNavController().navigate(R.id.profileFragment)
+            val user = MockRepository.currentUser.value
+            if (user?.role == com.segotlo.campusfindapp.data.UserRole.ADMIN) {
+                findNavController().navigate(R.id.adminProfileFragment)
+            } else {
+                findNavController().navigate(R.id.profileFragment)
+            }
         }
 
         binding.cardReportLost.setOnClickListener {
