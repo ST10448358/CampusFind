@@ -195,7 +195,7 @@
 
                     <!-- Language Switcher Container -->
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:background="@drawable/bg_rounded_pill"
@@ -206,42 +206,53 @@
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:layout_marginHorizontal="8dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginEnd="4dp"
                             android:contentDescription="@string/section_language"
                             android:src="@android:drawable/ic_menu_mapmode"
                             app:tint="#9CA3AF" />
 
                         <TextView
                             android:id="@+id/btn_lang_en"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="#FFFFFF"
-                            android:paddingHorizontal="14dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_rounded_pill"
+                            android:backgroundTint="#FFFFFF"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="4dp"
                             android:paddingVertical="6dp"
                             android:text="@string/lang_english"
                             android:textColor="#0B0F19"
-                            android:textSize="13sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/btn_lang_tn"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:paddingHorizontal="14dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="4dp"
                             android:paddingVertical="6dp"
                             android:text="@string/lang_setswana"
                             android:textColor="#9CA3AF"
-                            android:textSize="13sp" />
+                            android:textSize="12sp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
                             android:id="@+id/btn_lang_zu"
-                            android:paddingHorizontal="14dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="4dp"
                             android:paddingVertical="6dp"
                             android:text="@string/lang_isizulu"
                             android:textColor="#9CA3AF"
-                            android:textSize="13sp" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 

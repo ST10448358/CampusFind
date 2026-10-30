@@ -52,13 +52,16 @@ class OpeningFragment : Fragment() {
     }
 
     private fun updateLangUI(selected: Int) {
-        binding.btnLangEn.setBackgroundColor(if (selected == 0) Color.WHITE else Color.TRANSPARENT)
+        val whiteTint = android.content.res.ColorStateList.valueOf(Color.WHITE)
+        val transparentTint = android.content.res.ColorStateList.valueOf(Color.TRANSPARENT)
+
+        binding.btnLangEn.backgroundTintList = if (selected == 0) whiteTint else transparentTint
         binding.btnLangEn.setTextColor(if (selected == 0) Color.parseColor("#0B0F19") else Color.parseColor("#9CA3AF"))
 
-        binding.btnLangTn.setBackgroundColor(if (selected == 1) Color.WHITE else Color.TRANSPARENT)
+        binding.btnLangTn.backgroundTintList = if (selected == 1) whiteTint else transparentTint
         binding.btnLangTn.setTextColor(if (selected == 1) Color.parseColor("#0B0F19") else Color.parseColor("#9CA3AF"))
 
-        binding.btnLangZu.setBackgroundColor(if (selected == 2) Color.WHITE else Color.TRANSPARENT)
+        binding.btnLangZu.backgroundTintList = if (selected == 2) whiteTint else transparentTint
         binding.btnLangZu.setTextColor(if (selected == 2) Color.parseColor("#0B0F19") else Color.parseColor("#9CA3AF"))
 
         when (selected) {
