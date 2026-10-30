@@ -210,6 +210,117 @@
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Password Strength & Requirements Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card_password_requirements"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:cardBackgroundColor="#101726"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#1F2D42"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="12dp">
+
+                            <!-- Strength Label & Progress Row -->
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tv_password_strength_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="PASSWORD STRENGTH:"
+                                    android:textColor="#9CA3AF"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tv_password_strength_badge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:text="VERY WEAK"
+                                    android:textColor="#F87171"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <ProgressBar
+                                android:id="@+id/pb_password_strength"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp"
+                                android:layout_marginTop="4dp"
+                                android:max="5"
+                                android:progress="0"
+                                android:progressTint="#F87171" />
+
+                            <!-- Requirements Checklist -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="MUST CONTAIN:"
+                                android:textColor="#6B7280"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_req_min_length"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="✕ At least 8 characters long"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_req_uppercase"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="✕ 1 Uppercase letter (A-Z)"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_req_lowercase"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="✕ 1 Lowercase letter (a-z)"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_req_digit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="✕ 1 Number (0-9)"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_req_special"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="✕ 1 Special character (!@#$%^&amp;*)"
+                                android:textColor="#9CA3AF"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
                     <!-- Confirm Password Field -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
