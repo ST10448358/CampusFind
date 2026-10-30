@@ -51,8 +51,7 @@
                             android:src="@drawable/ic_nav_profile"
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                             app:strokeColor="#00A884"
-                            app:strokeWidth="2dp"
-                            app:tint="#F9FAFB" />
+                            app:strokeWidth="2dp" />
 
                         <ImageView
                             android:layout_width="28dp"

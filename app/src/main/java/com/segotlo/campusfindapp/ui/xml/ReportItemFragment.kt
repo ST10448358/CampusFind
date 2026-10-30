@@ -22,6 +22,7 @@ import com.segotlo.campusfindapp.data.ReportType
 import com.segotlo.campusfindapp.data.SouthAfricanInstitutions
 import com.segotlo.campusfindapp.data.getCoordinates
 import com.segotlo.campusfindapp.databinding.FragmentReportItemBinding
+import com.segotlo.campusfindapp.util.UriUtils
 import java.util.Date
 
 class ReportItemFragment : Fragment() {
@@ -35,10 +36,21 @@ class ReportItemFragment : Fragment() {
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            uploadedPhotoUri = it.toString()
-            binding.imgUploadPreview.setImageURI(it)
-            binding.imgUploadPreview.visibility = View.VISIBLE
-            binding.llUploadPrompt.visibility = View.GONE
+            try {
+                val safeUri = UriUtils.copyUriToInternalFile(requireContext(), it, "report_photo")
+                if (safeUri != null) {
+                    uploadedPhotoUri = safeUri.toString()
+                    binding.imgUploadPreview.setImageURI(safeUri)
+                    binding.imgUploadPreview.visibility = View.VISIBLE
+                    binding.llUploadPrompt.visibility = View.GONE
+                } else {
+                    uploadedPhotoUri = null
+                    Toast.makeText(requireContext(), "Failed to process photo", Toast.LENGTH_SHORT).show()
+                }
+            } catch (_: Exception) {
+                uploadedPhotoUri = null
+                Toast.makeText(requireContext(), "Failed to process photo", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

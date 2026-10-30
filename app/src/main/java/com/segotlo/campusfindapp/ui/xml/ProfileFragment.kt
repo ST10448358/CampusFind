@@ -23,6 +23,7 @@ import com.segotlo.campusfindapp.databinding.DialogEditProfileBinding
 import com.segotlo.campusfindapp.databinding.DialogPrivacyPolicyBinding
 import com.segotlo.campusfindapp.databinding.DialogTermsUseBinding
 import com.segotlo.campusfindapp.databinding.FragmentProfileBinding
+import com.segotlo.campusfindapp.util.UriUtils
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -33,15 +34,63 @@ class ProfileFragment : Fragment() {
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
-            binding.imgProfileAvatar.setImageURI(uri)
-            Toast.makeText(requireContext(), "Profile photo updated from Gallery", Toast.LENGTH_SHORT).show()
+            try {
+                val safeUri = UriUtils.copyUriToInternalFile(requireContext(), uri, "avatar_gallery")
+                if (safeUri != null) {
+                    binding.imgProfileAvatar.imageTintList = null
+                    binding.imgProfileAvatar.setImageURI(safeUri)
+                    val currentUser = MockRepository.currentUser.value
+                    if (currentUser != null) {
+                        MockRepository.updateUser(currentUser.copy(avatarUrl = safeUri.toString()))
+                    }
+                    Toast.makeText(requireContext(), "Profile photo updated from Gallery", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Failed to update profile photo", Toast.LENGTH_SHORT).show()
+                }
+            } catch (_: Exception) {
+                Toast.makeText(requireContext(), "Failed to update profile photo", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private val cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            launchCameraPreview()
+        } else {
+            Toast.makeText(requireContext(), "Camera permission is required to take a photo", Toast.LENGTH_SHORT).show()
         }
     }
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         if (bitmap != null) {
-            binding.imgProfileAvatar.setImageBitmap(bitmap)
-            Toast.makeText(requireContext(), "Profile photo updated from Camera", Toast.LENGTH_SHORT).show()
+            try {
+                val file = java.io.File(requireContext().cacheDir, "avatar_camera_${System.currentTimeMillis()}.jpg")
+                file.outputStream().use { out ->
+                    bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, out)
+                }
+                val fileUri = android.net.Uri.fromFile(file)
+
+                binding.imgProfileAvatar.imageTintList = null
+                binding.imgProfileAvatar.setImageURI(fileUri)
+
+                val currentUser = MockRepository.currentUser.value
+                if (currentUser != null) {
+                    MockRepository.updateUser(currentUser.copy(avatarUrl = fileUri.toString()))
+                }
+                Toast.makeText(requireContext(), "Profile photo updated from Camera", Toast.LENGTH_SHORT).show()
+            } catch (_: Exception) {
+                binding.imgProfileAvatar.imageTintList = null
+                binding.imgProfileAvatar.setImageBitmap(bitmap)
+                Toast.makeText(requireContext(), "Profile photo updated from Camera", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun launchCameraPreview() {
+        try {
+            cameraLauncher.launch(null)
+        } catch (_: Exception) {
+            Toast.makeText(requireContext(), "Unable to open camera app", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -58,7 +107,8 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize radio button states based on current app locale
-        val currentLang = AppCompatDelegate.getApplicationLocales().get(0)?.language ?: "en"
+        val locales = AppCompatDelegate.getApplicationLocales()
+        val currentLang = if (!locales.isEmpty) locales.get(0)?.language ?: "en" else "en"
         binding.radioLangEn.isChecked = currentLang == "en" || currentLang.isEmpty()
         binding.radioLangTn.isChecked = currentLang == "tn"
         binding.radioLangZu.isChecked = currentLang == "zu"
@@ -75,6 +125,31 @@ class ProfileFragment : Fragment() {
                         b.switchPushNotif.isChecked = user.pushNotificationsEnabled
                         b.switchMatchAlerts.isChecked = user.matchAlertsEnabled
                         b.switchReportUpdates.isChecked = user.reportUpdatesEnabled
+
+                        if (!user.avatarUrl.isNullOrEmpty()) {
+                            try {
+                                val avatarUri = android.net.Uri.parse(user.avatarUrl)
+                                if (avatarUri.scheme == "content") {
+                                    val safeUri = UriUtils.copyUriToInternalFile(requireContext(), avatarUri, "avatar_cache")
+                                    if (safeUri != null) {
+                                        b.imgProfileAvatar.imageTintList = null
+                                        b.imgProfileAvatar.setImageURI(safeUri)
+                                        MockRepository.updateUser(user.copy(avatarUrl = safeUri.toString()))
+                                    } else {
+                                        b.imgProfileAvatar.setImageResource(R.drawable.ic_nav_profile)
+                                    }
+                                } else if (avatarUri.scheme == "file" || avatarUri.scheme.isNullOrEmpty()) {
+                                    b.imgProfileAvatar.imageTintList = null
+                                    val safeFileUri = if (avatarUri.scheme.isNullOrEmpty()) android.net.Uri.fromFile(java.io.File(user.avatarUrl)) else avatarUri
+                                    b.imgProfileAvatar.setImageURI(safeFileUri)
+                                } else {
+                                    b.imgProfileAvatar.imageTintList = null
+                                    b.imgProfileAvatar.setImageURI(avatarUri)
+                                }
+                            } catch (_: Throwable) {
+                                b.imgProfileAvatar.setImageResource(R.drawable.ic_nav_profile)
+                            }
+                        }
                     }
                 }
             }
@@ -168,10 +243,15 @@ class ProfileFragment : Fragment() {
             .setItems(options) { dialog, which ->
                 when (which) {
                     0 -> {
-                        try {
-                            cameraLauncher.launch(null)
-                        } catch (_: Exception) {
-                            Toast.makeText(requireContext(), "Camera not available", Toast.LENGTH_SHORT).show()
+                        val hasPermission = androidx.core.content.ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            android.Manifest.permission.CAMERA
+                        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+                        if (hasPermission) {
+                            launchCameraPreview()
+                        } else {
+                            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
                         }
                     }
                     1 -> {
