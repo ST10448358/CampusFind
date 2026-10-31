@@ -66,12 +66,15 @@ class LoginFragment : Fragment() {
 
         binding.btnGoogleSignin.setOnClickListener {
             lifecycleScope.launch {
-                val result = GoogleAuthManager.signInWithGoogle(requireContext())
+                val result = GoogleAuthManager.signInWithGoogle(requireActivity())
                 if (result.isSuccess) {
                     findNavController().navigate(R.id.homeFragment)
                 } else {
-                    val err = result.exceptionOrNull()?.message ?: "Unknown error"
-                    Toast.makeText(requireContext(), "Google sign-in failed: $err", Toast.LENGTH_LONG).show()
+                    val exception = result.exceptionOrNull()
+                    if (exception !is androidx.credentials.exceptions.GetCredentialCancellationException) {
+                        val err = exception?.message ?: "Unknown error"
+                        Toast.makeText(requireContext(), "Google sign-in error: $err", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
