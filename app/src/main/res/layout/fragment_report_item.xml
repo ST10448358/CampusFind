@@ -301,18 +301,56 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="180dp"
+                        android:layout_height="200dp"
                         android:layout_marginTop="8dp"
                         app:cardBackgroundColor="#101726"
                         app:cardCornerRadius="14dp"
                         app:strokeColor="#1F2D42"
                         app:strokeWidth="1dp">
 
-                        <androidx.fragment.app.FragmentContainerView
-                            android:id="@+id/map_report_item"
-                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent">
+
+                            <androidx.fragment.app.FragmentContainerView
+                                android:id="@+id/map_report_item"
+                                android:name="com.google.android.gms.maps.SupportMapFragment"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <!-- Center Pin Target Overlay -->
+                            <ImageView
+                                android:id="@+id/img_center_pin_preview"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_centerInParent="true"
+                                android:contentDescription="Map Target Pin"
+                                android:src="@android:drawable/ic_menu_myplaces"
+                                app:tint="#00A884" />
+
+                            <!-- Floating Enlarge Button -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_enlarge_map"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_margin="8dp"
+                                android:backgroundTint="#CC0E1524"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="0dp"
+                                android:text="⛶ Enlarge Map"
+                                android:textColor="#00A884"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                app:cornerRadius="8dp"
+                                app:strokeColor="#00A884"
+                                app:strokeWidth="1dp" />
+
+                        </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Submit Button -->

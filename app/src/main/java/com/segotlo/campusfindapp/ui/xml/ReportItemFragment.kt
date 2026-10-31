@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
@@ -23,7 +24,11 @@ import com.segotlo.campusfindapp.data.SouthAfricanInstitutions
 import com.segotlo.campusfindapp.data.getCoordinates
 import com.segotlo.campusfindapp.databinding.FragmentReportItemBinding
 import com.segotlo.campusfindapp.util.UriUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Date
+import java.util.Locale
 
 class ReportItemFragment : Fragment() {
 
@@ -33,6 +38,8 @@ class ReportItemFragment : Fragment() {
     private var reportType = ReportType.LOST
     private var selectedLatLng = LatLng(-25.7545, 28.2314)
     private var uploadedPhotoUri: String? = null
+    private var googleMapInstance: com.google.android.gms.maps.GoogleMap? = null
+    private var isAutoFilledLocation = true
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -84,12 +91,31 @@ class ReportItemFragment : Fragment() {
 
         val instAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_white_text, SouthAfricanInstitutions.list)
         binding.actvReportInstitution.setAdapter(instAdapter)
+        binding.actvReportInstitution.setOnItemClickListener { parent, _, position, _ ->
+            val selectedInst = parent.getItemAtPosition(position).toString()
+            val coords = SouthAfricanInstitutions.getCoordinatesForInstitution(selectedInst)
+            updateMapMarkerAndCamera(coords)
+        }
 
         val locAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_white_text, CampusLocation.values().map { it.name })
         binding.actvCampusLocation.setAdapter(locAdapter)
 
+        binding.etLocationDetail.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (binding.etLocationDetail.hasFocus()) {
+                    isAutoFilledLocation = false
+                }
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
         binding.cardUploadPhoto.setOnClickListener {
             getContent.launch("image/*")
+        }
+
+        binding.btnEnlargeMap.setOnClickListener {
+            showFullscreenMapDialog()
         }
 
         setupMap()
@@ -115,16 +141,18 @@ class ReportItemFragment : Fragment() {
 
             val mapFragment = childFragmentManager.findFragmentById(R.id.map_report_item) as? SupportMapFragment
             mapFragment?.getMapAsync { googleMap ->
+                googleMapInstance = googleMap
                 try {
                     googleMap.uiSettings.isZoomControlsEnabled = true
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 15f))
-                    googleMap.addMarker(MarkerOptions().position(selectedLatLng).title("Report Location"))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedLatLng, 16f))
+
+                    googleMap.setOnCameraIdleListener {
+                        val center = googleMap.cameraPosition.target
+                        onLocationPinMoved(center)
+                    }
 
                     googleMap.setOnMapClickListener { latLng ->
-                        selectedLatLng = latLng
-                        googleMap.clear()
-                        googleMap.addMarker(MarkerOptions().position(latLng).title("Selected Pin"))
-                        binding.tvMapCoords.text = String.format("%.4f, %.4f", latLng.latitude, latLng.longitude)
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, googleMap.cameraPosition.zoom))
                     }
                 } catch (_: SecurityException) {
                     // Suppress SecurityException from GoogleApiManager
@@ -136,6 +164,132 @@ class ReportItemFragment : Fragment() {
             // Suppress SecurityException from GoogleApiManager
         } catch (_: Throwable) {
             // Suppress GMS / SecurityException
+        }
+    }
+
+    private fun updateMapMarkerAndCamera(latLng: LatLng) {
+        onLocationPinMoved(latLng)
+        val map = googleMapInstance ?: return
+        try {
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+        } catch (_: Throwable) {}
+    }
+
+    private fun onLocationPinMoved(latLng: LatLng) {
+        selectedLatLng = latLng
+        binding.tvMapCoords.text = String.format(Locale.getDefault(), "%.4f, %.4f", latLng.latitude, latLng.longitude)
+
+        // Calculate proximity to known CampusLocation landmarks
+        val (closestLocation, landmarkName) = detectCampusLandmark(latLng)
+
+        // Auto-select dropdown item
+        binding.actvCampusLocation.setText(closestLocation.name, false)
+
+        // Auto-fill location detail field if not manually overridden
+        if (binding.etLocationDetail.text.isNullOrEmpty() || isAutoFilledLocation) {
+            isAutoFilledLocation = true
+            binding.etLocationDetail.setText(landmarkName)
+        }
+
+        // Asynchronously query Geocoder
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                if (android.location.Geocoder.isPresent()) {
+                    val geocoder = android.location.Geocoder(requireContext(), Locale.getDefault())
+                    @Suppress("DEPRECATION")
+                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    val address = addresses?.firstOrNull()
+                    if (address != null) {
+                        val featureName = address.featureName ?: address.thoroughfare ?: address.subThoroughfare
+                        if (!featureName.isNullOrEmpty() && !featureName.matches(Regex("^[0-9.-]+$"))) {
+                            val refinedDetail = "$landmarkName ($featureName)"
+                            withContext(Dispatchers.Main) {
+                                if (isAutoFilledLocation) {
+                                    binding.etLocationDetail.setText(refinedDetail)
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (_: Throwable) {}
+        }
+    }
+
+    private fun detectCampusLandmark(latLng: LatLng): Pair<CampusLocation, String> {
+        val landmarks = listOf(
+            Triple(CampusLocation.MAIN_LIBRARY, Pair(-25.7551, 28.2302), "Main Campus Library & Study Commons"),
+            Triple(CampusLocation.SCIENCE_BUILDING, Pair(-25.7529, 28.2335), "Science & Research Complex"),
+            Triple(CampusLocation.STUDENT_UNION, Pair(-25.7538, 28.2321), "Student Union & Services Hub"),
+            Triple(CampusLocation.ENGINEERING_COMPLEX, Pair(-25.7548, 28.2285), "Engineering & Technology Building"),
+            Triple(CampusLocation.SPORTS_CENTRE, Pair(-25.7512, 28.2370), "Campus Sports Complex & Gymnasium"),
+            Triple(CampusLocation.CAMPUS_SECURITY_OFFICE, Pair(-25.7562, 28.2290), "Campus Security Office & Main Gate"),
+            Triple(CampusLocation.DINING_HALL, Pair(-25.7560, 28.2340), "Main Campus Dining Hall & Cafeteria"),
+            Triple(CampusLocation.RESIDENTIAL_DORMS, Pair(-25.7575, 28.2355), "Student Residence / Dormitory Block")
+        )
+
+        var closest = CampusLocation.OTHER
+        var closestName = "Campus Main Grounds"
+        var minDistance = Double.MAX_VALUE
+
+        for ((location, coords, name) in landmarks) {
+            val dist = calculateDistance(latLng.latitude, latLng.longitude, coords.first, coords.second)
+            if (dist < minDistance) {
+                minDistance = dist
+                closest = location
+                closestName = name
+            }
+        }
+
+        return if (minDistance < 800.0) { // within 800m
+            Pair(closest, closestName)
+        } else {
+            Pair(CampusLocation.OTHER, "Campus Main Grounds")
+        }
+    }
+
+    private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val latDiff = Math.toRadians(lat2 - lat1)
+        val lonDiff = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return 6371000.0 * c // meters
+    }
+
+    private fun showFullscreenMapDialog() {
+        val dialogBinding = com.segotlo.campusfindapp.databinding.DialogFullscreenMapBinding.inflate(layoutInflater)
+        val dialog = android.app.Dialog(requireContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        dialog.setContentView(dialogBinding.root)
+
+        var tempSelectedLatLng = selectedLatLng
+        dialogBinding.tvFullscreenCoords.text = String.format("%.4f, %.4f", tempSelectedLatLng.latitude, tempSelectedLatLng.longitude)
+
+        dialogBinding.btnCloseFullscreenMap.setOnClickListener { dialog.dismiss() }
+
+        dialogBinding.btnConfirmFullscreenLocation.setOnClickListener {
+            updateMapMarkerAndCamera(tempSelectedLatLng)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_fullscreen) as? SupportMapFragment
+        mapFragment?.getMapAsync { fullMap ->
+            try {
+                fullMap.uiSettings.isZoomControlsEnabled = true
+                fullMap.moveCamera(CameraUpdateFactory.newLatLngZoom(tempSelectedLatLng, 17f))
+
+                fullMap.setOnCameraIdleListener {
+                    val center = fullMap.cameraPosition.target
+                    tempSelectedLatLng = center
+                    dialogBinding.tvFullscreenCoords.text = String.format("%.4f, %.4f", center.latitude, center.longitude)
+                }
+
+                fullMap.setOnMapClickListener { latLng ->
+                    fullMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, fullMap.cameraPosition.zoom))
+                }
+            } catch (_: Throwable) {}
         }
     }
 

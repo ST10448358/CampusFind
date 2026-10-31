@@ -5,22 +5,95 @@
     android:layout_height="match_parent"
     android:background="#080C14">
 
+    <!-- Fullscreen Google Map Fragment -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map_fullscreen"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageButton
-        android:id="@+id/btn_close_fullscreen_map"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+    <!-- Center Target Pin Overlay -->
+    <ImageView
+        android:id="@+id/img_fullscreen_center_pin"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="Map Target Pin"
+        android:src="@android:drawable/ic_menu_myplaces"
+        app:tint="#00A884" />
+
+    <!-- Top Header Overlay Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_margin="16dp"
-        android:background="@drawable/bg_rounded_pill"
-        android:backgroundTint="#0E1524"
-        android:contentDescription="Close"
-        android:padding="10dp"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:tint="#F9FAFB" />
+        app:cardBackgroundColor="#CC0E1524"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:strokeColor="#1A263B"
+        app:strokeWidth="1dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <ImageButton
+                android:id="@+id/btn_close_fullscreen_map"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Close"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:tint="#F9FAFB" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="12dp"
+                android:layout_toEndOf="@id/btn_close_fullscreen_map"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Campus Location"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_fullscreen_coords"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Pan map to position pin..."
+                    android:textColor="#00A884"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Bottom Action Button Overlay -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm_fullscreen_location"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="24dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="✓ Confirm Selected Location"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:backgroundTint="#00A884"
+        app:cornerRadius="16dp"
+        app:elevation="8dp" />
 
 </RelativeLayout>
