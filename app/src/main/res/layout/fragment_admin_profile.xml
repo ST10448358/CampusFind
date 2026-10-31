@@ -293,8 +293,6 @@
                 android:textSize="15sp"
                 app:backgroundTint="#0E1524"
                 app:cornerRadius="16dp"
-                app:icon="@android:drawable/ic_menu_revert"
-                app:iconTint="#F43F5E"
                 app:strokeColor="#F43F5E"
                 app:strokeWidth="1dp" />
 

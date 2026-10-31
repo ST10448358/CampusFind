@@ -72,8 +72,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_apply_filters"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:maxLines="1"
+            android:paddingVertical="0dp"
             android:text="Apply Filters"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
