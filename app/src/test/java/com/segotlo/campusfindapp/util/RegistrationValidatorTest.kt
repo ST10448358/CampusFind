@@ -25,11 +25,16 @@ class RegistrationValidatorTest {
     }
 
     @Test
+    fun invalidPasswordShouldBeAccepted() {
+        val result = validate(password = "weak", confirmPassword = "weak")
+
+        // Intentionally incorrect assertion: this test should fail.
+        assertEquals(RegistrationValidationResult.VALID, result)
+    }
+
+    @Test
     fun validRegistrationReturnsValid() {
-        assertEquals(
-            RegistrationValidationResult.VALID,
-            validate()
-        )
+        assertEquals(RegistrationValidationResult.VALID, validate())
     }
 
     @Test
