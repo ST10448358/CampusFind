@@ -1,5 +1,6 @@
 package com.segotlo.campusfindapp.ui.xml
-
+import com.segotlo.campusfindapp.util.RegistrationValidator
+import com.segotlo.campusfindapp.util.RegistrationValidationResult
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
