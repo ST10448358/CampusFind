@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.googleid)
 
     testImplementation(libs.junit)
+    // JUnit dependency for automated unit testing
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

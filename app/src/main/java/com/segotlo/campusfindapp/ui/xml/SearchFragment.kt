@@ -1,6 +1,7 @@
 package com.segotlo.campusfindapp.ui.xml
 
 import android.content.Intent
+import com.segotlo.campusfindapp.data.ReportSearchFilter
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
@@ -119,14 +120,13 @@ class SearchFragment : Fragment() {
             else -> null
         }
 
-        val filtered = allReports.filter { r ->
-            (typeFilter == null || r.type == typeFilter) &&
-            (selectedCategory == null || r.category == selectedCategory) &&
-            (selectedLocation == null || r.location == selectedLocation) &&
-            (query.isEmpty() || r.title.contains(query, ignoreCase = true) ||
-                    r.description.contains(query, ignoreCase = true) ||
-                    r.institution.contains(query, ignoreCase = true))
-        }
+        val filtered = ReportSearchFilter.filter(
+            reports = allReports,
+            query = query,
+            type = typeFilter,
+            category = selectedCategory,
+            location = selectedLocation
+        )
 
         b.tvActiveFilterSummary.text = "Showing: ${selectedCategory?.name ?: "All Categories"} • ${selectedLocation?.name ?: "All Locations"}"
 
