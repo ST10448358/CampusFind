@@ -131,7 +131,6 @@ For a detailed explanation of the APIs used in CampusFind, including their purpo
 
 
 
-## Google Play Store Listing Preparation
 
 ## Google Play Store Listing
 
