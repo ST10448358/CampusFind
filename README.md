@@ -14,8 +14,7 @@ CampusFind is a mobile lost-and-found application designed to help students repo
 
 The application aims to provide a centralised platform where students can submit lost-item and found-item reports, search for reported items, and view information about their submitted reports.
 
-CampusFind is designed to include a search feature that allows users to search for reported items using relevant keywords. The application also aims to support an administrator-assisted matching system, where an administrator can review potential matches between lost and found reports.
-
+CampusFind includes an AI-powered matching system designed to identify potential matches between lost and found reports. The application also incorporates an AI chatbot to assist users and voice search functionality to make searching for reported items more convenient.
 The app uses Firebase as its backend service and Cloud Firestore as its database for storing application data.
 
 
@@ -51,25 +50,32 @@ CampusFind was designed with a focus on usability, simplicity, and an organised 
 
 The user interface is designed to use a consistent layout, readable text, and appropriate icons to make the application easy to navigate. Input validation is considered to help prevent incomplete or invalid information from being submitted.
 
-The application also incorporates an administrator role. The administrator section is intended to support report management and the review of possible matches between lost and found items.
+The application also incorporates an administrator role. The administrator section supports report management, the review of potential matches between lost and found items, and the management of reported items.
 
 Firebase was selected as the backend service because it provides authentication and cloud database functionality that can be integrated with the Android application. Cloud Firestore is used to store structured application data.
 
-The design also considers the future implementation of additional functionality, including offline support, real-time notifications, and multi-language support.
+TAdditional design considerations include dark mode, image uploads, profile customisation, and multi-language support. The application supports English, Setswana, and isiZulu to make it accessible to a wider range of students.
 
 
 
 ## Key Features
 
 - User registration and login.
+- Google Single Sign-On (SSO).
 - Reporting lost and found items.
+- Uploading pictures when reporting items.
 - Searching for reported items.
+- Voice search functionality.
+- AI-powered item matching system.
+- AI chatbot assistance.
 - Administrator-assisted report management.
-- Potential item matching.
-- User settings and preferences.
+- Ownership verification and item return code.
+- User profile editing and account settings.
+- Dark mode.
+- Firebase Cloud Messaging (FCM) notifications.
+- Multi-language support (English, Setswana, and isiZulu).
 - Firebase backend integration.
 - Cloud Firestore database.
-
 
 
 
@@ -80,7 +86,7 @@ The design also considers the future implementation of additional functionality,
 - **Development Environment:** Android Studio
 - **Backend:** Firebase
 - **Database:** Cloud Firestore
-- **Authentication:** Firebase Authentication (where implemented)
+- **Authentication:** Firebase Authentication and Google Single Sign-On
 - **Version Control:** Git and GitHub
 - **Continuous Integration:** GitHub Actions
 - **Testing:** Android Instrumented Tests
@@ -122,5 +128,33 @@ The specific build and testing steps performed by GitHub Actions depend on the c
 For a detailed explanation of the APIs used in CampusFind, including their purposes, key components, and code examples, view the documentation below.
 
 [View API Documentation](API_DOCUMENTATION.md)
+
+
+
+## Google Play Store Listing Preparation
+
+CampusFind includes preparation for a Google Play Store listing as part of the project requirements. This involves preparing the application's store listing information, including its name, description, and promotional images.
+The application has not been published on the Google Play Store. The listing preparation is intended to demonstrate how the application would be presented to users before publication.
+
+**Application Name**: CampusFind
+
+**Short Description**:
+Find, report, and recover lost items on campus with CampusFind.
+
+**Full Description**:
+CampusFind is a campus lost-and-found application that helps students report lost items, submit found-item reports, and search for belongings within their campus environment.
+With features such as AI-powered item matching, voice search, and an AI chatbot, CampusFind makes it easier for students to find relevant item reports and manage the recovery process.
+The application also provides user profiles, image uploads, dark mode, notifications, and multi-language support to improve the overall user experience.
+
+
+## AI Usage Declaration
+
+Artificial Intelligence (AI) tools were used throughout the development of the CampusFind application to support various stages of the software development process.
+
+AI was used to assist with identifying and resolving application crashes, troubleshooting coding errors, understanding technical problems, and finding possible solutions when challenges occurred during development. It was also used to provide guidance when implementing functionality or working with technologies and concepts that the development team was unfamiliar with.
+
+Furthermore, AI tools assisted with researching the application, gathering additional information relevant to the project, and recommending possible features and improvements that could enhance the application's functionality and user experience.
+
+AI was therefore used as a supporting resource for research, learning, debugging, problem-solving, feature recommendations, and improving development efficiency. The development team remained responsible for the application's design, implementation, decisions, and overall development.
 
 
