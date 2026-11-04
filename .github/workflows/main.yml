@@ -1,5 +1,5 @@
 
-name: CampusFind Android CI
+name: CampusFind Passing CI
 
 on:
   push:
