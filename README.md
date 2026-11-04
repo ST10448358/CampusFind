@@ -133,19 +133,11 @@ For a detailed explanation of the APIs used in CampusFind, including their purpo
 
 ## Google Play Store Listing Preparation
 
-CampusFind includes preparation for a Google Play Store listing as part of the project requirements. This involves preparing the application's store listing information, including its name, description, and promotional images.
-The application has not been published on the Google Play Store. The listing preparation is intended to demonstrate how the application would be presented to users before publication.
+## Google Play Store Listing
 
-**Application Name**: CampusFind
+View the proposed Google Play Store listing for CampusFind, including the application description, features, screenshots, and store information.
 
-**Short Description**:
-Find, report, and recover lost items on campus with CampusFind.
-
-**Full Description**:
-CampusFind is a campus lost-and-found application that helps students report lost items, submit found-item reports, and search for belongings within their campus environment.
-With features such as AI-powered item matching, voice search, and an AI chatbot, CampusFind makes it easier for students to find relevant item reports and manage the recovery process.
-The application also provides user profiles, image uploads, dark mode, notifications, and multi-language support to improve the overall user experience.
-
+[View Google Play Store Listing](docs/GOOGLE_PLAY_STORE_LISTING.md)
 
 ## AI Usage Declaration
 
