@@ -77,7 +77,7 @@ The language options help make the application accessible to students from diffe
 <p align="center">
   <img src="images/home-screen.png" width="180" alt="CampusFind Home Screen">
   <img src="images/lost-items.png" width="180" alt="Lost Items">
-  <img src="docs/images/map.png" width="180" alt="map">
+  <img src="images/map.png" width="180" alt="map">
 </p>
 
 <p align="center">
