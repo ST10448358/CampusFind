@@ -106,6 +106,10 @@ GitHub also supports project organisation and collaboration by providing a share
 
 ## GitHub Actions
 
+<p align="center">
+  <img src="images/actions.png" width="120" alt="CampusFind App Icon">
+</p> 
+
 We set up GitHub Actions to automatically build and test my Android app every time we push changes. The earliest workflows passed successfully, such as Workflow #1 ("Add CI workflow for CampusFind Android project"), Workflow #2 ("Add report search filter and unit tests"), and Workflow #3 ("Add registration input validator and unit tests"), confirming that the core password validation, search filtering, and registration logic worked as expected. Later workflows, like #4, #13, #35, #36, #37, and #38, failed because they included intentionally incorrect tests—such as the "password validator failure demonstration test," the "intentional failing registration test," and the additional failing tests for the search filter. For example, one test expected two search results when only one was returned, and another expected a successful registration even though the passwords did not match. we kept these failing tests deliberately to demonstrate that GitHub Actions correctly detects, reports, and highlights incorrect expected results, proving the CI pipeline works as intended to catch bug
 
 
