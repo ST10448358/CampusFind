@@ -8,6 +8,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
+/**
+ * Production implementation of [ReportRepository] powered by Cloud Firestore.
+ * 
+ * Provides real-time synchronization for lost and found reports using snapshot listeners,
+ * automatic AI match evaluation upon new report creation, and atomic batch linking/unlinking.
+ */
 class FirebaseReportRepository : ReportRepository {
     private val firestore: FirebaseFirestore? = try { FirebaseFirestore.getInstance() } catch (_: Throwable) { null }
     
@@ -20,6 +26,10 @@ class FirebaseReportRepository : ReportRepository {
         listenToAllReports()
     }
 
+    /**
+     * Attaches a real-time snapshot listener to the Firestore 'reports' collection.
+     * Automatically sorts incoming documents by creation date descending and updates state flows.
+     */
     private fun listenToAllReports() {
         try {
             firestore?.collection("reports")
@@ -37,9 +47,14 @@ class FirebaseReportRepository : ReportRepository {
         } catch (_: Throwable) {}
     }
 
+    /**
+     * Adds a new report to Firestore. Automatically runs AI match evaluation against open reports
+     * and updates report status to MATCH_SUGGESTED if a high-confidence match candidate is found.
+     */
     override suspend fun addReport(report: Report): Result<Unit> {
         return try {
             val db = firestore ?: throw Exception("Firebase Firestore unavailable")
+            // Evaluate AI match suggestion against current active reports
             val match = com.segotlo.campusfindapp.util.AIMatchingEngine.evaluateMatches(report, _allReports.value)
             val finalReport = if (match != null) {
                 report.copy(status = ReportStatus.MATCH_SUGGESTED, matchedWithId = match.foundReport.id)
@@ -49,6 +64,7 @@ class FirebaseReportRepository : ReportRepository {
 
             db.collection("reports").document(finalReport.id).set(mapReportToMap(finalReport)).await()
             if (match != null) {
+                // Bi-directionally update candidate report to MATCH_SUGGESTED status
                 db.collection("reports").document(match.foundReport.id).update(mapOf("status" to ReportStatus.MATCH_SUGGESTED.name, "matchedWithId" to finalReport.id)).await()
             }
             Result.success(Unit)
@@ -57,6 +73,9 @@ class FirebaseReportRepository : ReportRepository {
         }
     }
 
+    /**
+     * Updates the status (and optional custom status label) of a specific report document.
+     */
     override suspend fun updateReportStatus(reportId: String, status: ReportStatus, customLabel: String?): Result<Unit> {
         return try {
             val db = firestore ?: throw Exception("Firebase Firestore unavailable")
@@ -69,6 +88,10 @@ class FirebaseReportRepository : ReportRepository {
         }
     }
 
+    /**
+     * Links two reports (Lost & Found) atomically using a Firestore batch transaction,
+     * setting both reports to MATCH_SUGGESTED status with cross-referenced IDs.
+     */
     override suspend fun linkReports(reportId1: String, reportId2: String): Result<Unit> {
         return try {
             val db = firestore ?: throw Exception("Firebase Firestore unavailable")
@@ -84,6 +107,9 @@ class FirebaseReportRepository : ReportRepository {
         }
     }
 
+    /**
+     * Unlinks two previously paired reports atomically, resetting their status to OPEN.
+     */
     override suspend fun unlinkReports(reportId1: String, reportId2: String): Result<Unit> {
         return try {
             val db = firestore ?: throw Exception("Firebase Firestore unavailable")
@@ -99,12 +125,18 @@ class FirebaseReportRepository : ReportRepository {
         }
     }
 
+    /**
+     * Returns a reactive state flow filtered specifically for reports created by [userId].
+     */
     override fun getReportsByUser(userId: String): StateFlow<List<Report>> {
         return userReportFlows.getOrPut(userId) {
             MutableStateFlow(_allReports.value.filter { it.userId == userId })
         }
     }
 
+    /**
+     * Serializes a [Report] model instance into a Firestore document HashMap.
+     */
     private fun mapReportToMap(report: Report): Map<String, Any?> {
         return mapOf(
             "userId" to report.userId,
@@ -131,6 +163,9 @@ class FirebaseReportRepository : ReportRepository {
         )
     }
 
+    /**
+     * Deserializes a raw Firestore document snapshot map into a typed [Report] domain object.
+     */
     private fun mapDocumentToReport(id: String, data: Map<String, Any>): Report {
         val typeStr = (data["type"] as? String ?: "LOST").uppercase()
         val parsedType = try { ReportType.valueOf(typeStr) } catch (e: Exception) { ReportType.LOST }

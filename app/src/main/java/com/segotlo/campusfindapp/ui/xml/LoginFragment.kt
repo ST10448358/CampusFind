@@ -1,10 +1,13 @@
 package com.segotlo.campusfindapp.ui.xml
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -45,7 +48,7 @@ class LoginFragment : Fragment() {
             val password = binding.etPassword.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Please enter both email and password", Toast.LENGTH_SHORT).show()
+                show6SecondPopUpMessage("Please enter both email and password")
                 return@setOnClickListener
             }
 
@@ -59,7 +62,8 @@ class LoginFragment : Fragment() {
                         findNavController().navigate(R.id.homeFragment)
                     }
                 } else {
-                    Toast.makeText(requireContext(), "Login failed: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                    val msg = result.exceptionOrNull()?.message ?: "Login failed"
+                    show6SecondPopUpMessage("Login failed: $msg")
                 }
             }
         }
@@ -68,16 +72,40 @@ class LoginFragment : Fragment() {
             lifecycleScope.launch {
                 val result = GoogleAuthManager.signInWithGoogle(requireActivity())
                 if (result.isSuccess) {
-                    findNavController().navigate(R.id.homeFragment)
+                    val user = result.getOrNull()
+                    show6SecondPopUpMessage("Welcome back to CampusFind, ${user?.firstName}!")
+                    if (user?.role == UserRole.ADMIN) {
+                        findNavController().navigate(R.id.adminDashboardFragment)
+                    } else {
+                        findNavController().navigate(R.id.homeFragment)
+                    }
                 } else {
                     val exception = result.exceptionOrNull()
-                    if (exception !is androidx.credentials.exceptions.GetCredentialCancellationException) {
-                        val err = exception?.message ?: "Unknown error"
-                        Toast.makeText(requireContext(), "Google sign-in error: $err", Toast.LENGTH_SHORT).show()
+                    if (exception is GoogleAuthManager.UnregisteredAccountException) {
+                        val email = exception.email
+                        show6SecondPopUpMessage("No account registered for $email. Please register first to access CampusFind.")
+                        val bundle = Bundle().apply { putString("prefill_email", email) }
+                        findNavController().navigate(R.id.registerFragment, bundle)
+                    } else if (exception !is GetCredentialCancellationException) {
+                        val err = exception?.message ?: "Google sign-in error"
+                        show6SecondPopUpMessage(err)
                     }
                 }
             }
         }
+    }
+
+    private fun show6SecondPopUpMessage(message: String) {
+        val ctx = context ?: return
+        Toast.makeText(ctx, message, Toast.LENGTH_LONG).show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            try {
+                if (isAdded && context != null) {
+                    Toast.makeText(ctx, message, Toast.LENGTH_LONG).show()
+                }
+            } catch (_: Throwable) {}
+        }, 3000L)
     }
 
     override fun onDestroyView() {

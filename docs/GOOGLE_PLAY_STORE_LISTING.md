@@ -1,7 +1,7 @@
 ## Google Play Store Listing
 
 <p align="center">
-  <img src="docs/images/app-icon.png" width="120" alt="CampusFind App Icon">
+  <img src="images/app-icon.png" width="120" alt="CampusFind App Icon">
 </p>
 
 <h2 align="center">CampusFind</h2>
@@ -75,27 +75,26 @@ The language options help make the application accessible to students from diffe
 ### App Screenshots
 
 <p align="center">
-  <img src="docs/images/home-screen.png" width="180" alt="CampusFind Home Screen">
-  <img src="docs/images/lost-items.png" width="180" alt="Lost Items">
-  <img src="docs/images/found-items.png" width="180" alt="Found Items">
+  <img src="images/home-screen.png" width="180" alt="CampusFind Home Screen">
+  <img src="images/lost-items.png" width="180" alt="Lost Items Screen">
+  <img src="images/map.png" width="180" alt="Map">
 </p>
 
 <p align="center">
-  <img src="docs/images/ai-chatbot.png" width="180" alt="AI Chatbot">
-  <img src="docs/images/ai-matching.png" width="180" alt="AI Matching">
-  <img src="docs/images/voice-search.png" width="180" alt="Voice Search">
+  <img src="images/ai-chatbot.png" width="180" alt="AI Chatbot Screen">
+  <img src="images/ai-matching.png" width="180" alt="AI Matching Screen">
+  <img src="images/reports.png" width="180" alt="Voice Search Screen">
 </p>
 
 ---
-
-
-
 
 ### App Support
 
 For application-related assistance, please refer to the project repository:
 
 [CampusFind – GitHub Repository](https://github.com/ST10448358/CampusFind.git)
+
+---
 
 ### Privacy and Data
 

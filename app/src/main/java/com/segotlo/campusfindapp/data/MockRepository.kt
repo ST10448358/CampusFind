@@ -1,5 +1,7 @@
 package com.segotlo.campusfindapp.data
 
+import android.os.Build
+import com.segotlo.campusfindapp.util.NotificationHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,6 +13,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object MockRepository {
@@ -84,8 +88,31 @@ object MockRepository {
         }
     }
 
+    private fun notifyNewDeviceLogin(user: User) {
+        val deviceName = try {
+            val manufacturer = Build.MANUFACTURER.lowercase().replaceFirstChar { it.uppercase() }
+            val model = Build.MODEL
+            if (model.lowercase().startsWith(manufacturer.lowercase())) model else "$manufacturer $model"
+        } catch (_: Throwable) {
+            "Android Device"
+        }
+        val timeStr = SimpleDateFormat("HH:mm:ss, dd MMM yyyy", Locale.getDefault()).format(Date())
+
+        sendNotificationWithPreferences(
+            userId = user.id,
+            title = "🔐 Security Alert: New Login",
+            message = "Your account (${user.email}) was logged into on $deviceName at $timeStr.",
+            reportId = null,
+            channelId = NotificationHelper.CHANNEL_GENERAL
+        )
+    }
+
     suspend fun login(email: String, password: String): Result<User> {
-        return userRepository.login(email, password)
+        val res = userRepository.login(email, password)
+        if (res.isSuccess) {
+            res.getOrNull()?.let { notifyNewDeviceLogin(it) }
+        }
+        return res
     }
 
     suspend fun loginWithGoogle(
@@ -94,21 +121,19 @@ object MockRepository {
         lastName: String,
         avatarUrl: String? = null
     ): Result<User> {
-        val registerRes = userRepository.register(
-            firstName = firstName,
-            lastName = lastName,
-            email = email,
-            password = "GoogleUserPassword123!",
-            studentNumber = "G-${(10000..99999).random()}",
-            institution = "University of Pretoria",
-            avatarUrl = avatarUrl,
-            role = UserRole.STUDENT
-        )
-        return if (registerRes.isSuccess) {
-            registerRes
-        } else {
-            userRepository.login(email, "GoogleUserPassword123!")
+        val res = userRepository.loginWithGoogle(email, firstName, lastName, avatarUrl)
+        if (res.isSuccess) {
+            res.getOrNull()?.let { notifyNewDeviceLogin(it) }
         }
+        return res
+    }
+
+    suspend fun checkAuthentication(): Result<User> {
+        return userRepository.checkAuthentication()
+    }
+
+    suspend fun isUserRegistered(email: String): Boolean {
+        return userRepository.isUserRegistered(email)
     }
 
     suspend fun register(

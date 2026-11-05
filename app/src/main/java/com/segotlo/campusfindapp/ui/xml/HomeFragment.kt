@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
                     val b = _binding ?: return@collectLatest
                     if (user != null) {
                         b.tvUsername.text = "${user.firstName} ${user.lastName}"
-                        b.tvUserId.text = "ID: ${user.studentStaffNumber}"
+                        b.tvUserId.text = "${user.email} • ID: ${user.studentStaffNumber}"
                     }
                 }
             }
