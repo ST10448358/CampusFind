@@ -17,6 +17,17 @@ interface UserRepository {
         role: UserRole = UserRole.STUDENT
     ): Result<User>
     
+    suspend fun loginWithGoogle(
+        email: String,
+        firstName: String,
+        lastName: String,
+        avatarUrl: String? = null
+    ): Result<User>
+    
+    suspend fun checkAuthentication(): Result<User>
+    
+    suspend fun isUserRegistered(email: String): Boolean
+    
     suspend fun logout()
     
     suspend fun updateUser(user: User): Result<Unit>

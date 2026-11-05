@@ -59,6 +59,11 @@ class RegisterFragment : Fragment() {
         // Initial state update
         updatePasswordRequirementsUI(binding.etPasswordReg.text?.toString().orEmpty())
 
+        val prefillEmail = arguments?.getString("prefill_email")
+        if (!prefillEmail.isNullOrBlank()) {
+            binding.etEmailReg.setText(prefillEmail)
+        }
+
         binding.btnSubmitRegister.setOnClickListener {
             val firstName = binding.etFirstName.text.toString().trim()
             val lastName = binding.etLastName.text.toString().trim()

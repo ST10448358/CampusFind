@@ -142,6 +142,128 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    override suspend fun loginWithGoogle(
+        email: String,
+        firstName: String,
+        lastName: String,
+        avatarUrl: String?
+    ): Result<User> {
+        return try {
+            val firebaseUser = auth?.currentUser
+            val db = firestore
+
+            if (firebaseUser != null && db != null) {
+                val docRef = db.collection("users").document(firebaseUser.uid)
+                val snapshot = try { docRef.get().await() } catch (_: Throwable) { null }
+
+                if (snapshot != null && snapshot.exists()) {
+                    val user = mapDocumentToUser(snapshot.id, snapshot.data ?: emptyMap())
+                    _currentUser.value = user
+                    return Result.success(user)
+                } else {
+                    val newUser = User(
+                        id = firebaseUser.uid,
+                        email = if (firebaseUser.email.isNullOrBlank()) email else firebaseUser.email!!,
+                        firstName = firstName.ifBlank { firebaseUser.displayName?.split(" ")?.firstOrNull() ?: "Google" },
+                        lastName = lastName.ifBlank { firebaseUser.displayName?.split(" ")?.drop(1)?.joinToString(" ") ?: "User" },
+                        studentStaffNumber = "G-${(10000..99999).random()}",
+                        role = if (email.contains("admin", ignoreCase = true)) UserRole.ADMIN else UserRole.STUDENT,
+                        departmentOrFaculty = "General",
+                        institution = "University of Pretoria",
+                        avatarUrl = avatarUrl ?: firebaseUser.photoUrl?.toString(),
+                        createdAt = Date()
+                    )
+                    try { docRef.set(mapUserToMap(newUser)).await() } catch (_: Throwable) {}
+                    _currentUser.value = newUser
+                    _allUsers.value = (_allUsers.value + newUser).distinctBy { it.id }
+                    return Result.success(newUser)
+                }
+            }
+
+            if (db != null) {
+                val querySnapshot = try {
+                    db.collection("users").whereEqualTo("email", email).get().await()
+                } catch (_: Throwable) { null }
+
+                val existingDoc = querySnapshot?.documents?.firstOrNull()
+                if (existingDoc != null && existingDoc.exists()) {
+                    val user = mapDocumentToUser(existingDoc.id, existingDoc.data ?: emptyMap())
+                    _currentUser.value = user
+                    return Result.success(user)
+                }
+            }
+
+            val localUserId = firebaseUser?.uid ?: UUID.nameUUIDFromBytes(email.toByteArray()).toString()
+            val localUser = User(
+                id = localUserId,
+                email = email,
+                firstName = firstName,
+                lastName = lastName,
+                studentStaffNumber = "G-${(10000..99999).random()}",
+                role = if (email.contains("admin", ignoreCase = true)) UserRole.ADMIN else UserRole.STUDENT,
+                departmentOrFaculty = "General",
+                institution = "University of Pretoria",
+                avatarUrl = avatarUrl,
+                createdAt = Date()
+            )
+            if (db != null) {
+                try { db.collection("users").document(localUserId).set(mapUserToMap(localUser)).await() } catch (_: Throwable) {}
+            }
+            _currentUser.value = localUser
+            _allUsers.value = (_allUsers.value + localUser).distinctBy { it.id }
+            Result.success(localUser)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Google login failed."))
+        }
+    }
+
+    override suspend fun checkAuthentication(): Result<User> {
+        return try {
+            val firebaseUser = auth?.currentUser
+            if (firebaseUser != null) {
+                val db = firestore
+                if (db != null) {
+                    val snapshot = db.collection("users").document(firebaseUser.uid).get().await()
+                    if (snapshot.exists()) {
+                        val user = mapDocumentToUser(snapshot.id, snapshot.data ?: emptyMap())
+                        _currentUser.value = user
+                        return Result.success(user)
+                    }
+                }
+            }
+            val current = _currentUser.value
+            if (current != null) {
+                Result.success(current)
+            } else {
+                Result.failure(Exception("No active authenticated session found."))
+            }
+        } catch (e: Exception) {
+            val current = _currentUser.value
+            if (current != null) {
+                Result.success(current)
+            } else {
+                Result.failure(Exception(e.message ?: "Authentication check failed."))
+            }
+        }
+    }
+
+    override suspend fun isUserRegistered(email: String): Boolean {
+        val cleanEmail = email.trim().lowercase()
+        if (_allUsers.value.any { it.email.trim().equals(cleanEmail, ignoreCase = true) }) {
+            return true
+        }
+        val db = firestore ?: return false
+        return try {
+            val snapshot = db.collection("users")
+                .whereEqualTo("email", cleanEmail)
+                .get()
+                .await()
+            !snapshot.isEmpty
+        } catch (_: Throwable) {
+            false
+        }
+    }
+
     override suspend fun logout() {
         try {
             auth?.signOut()
