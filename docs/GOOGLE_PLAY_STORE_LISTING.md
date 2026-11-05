@@ -76,26 +76,25 @@ The language options help make the application accessible to students from diffe
 
 <p align="center">
   <img src="images/home-screen.png" width="180" alt="CampusFind Home Screen">
-  <img src="images/lost-items.png" width="180" alt="Lost Items">
-  <img src="images/map.png" width="180" alt="map">
+  <img src="images/lost-items.png" width="180" alt="Lost Items Screen">
+  <img src="images/found-items.png" width="180" alt="Found Items Screen">
 </p>
 
 <p align="center">
-  <img src="images/ai-chatbot.png" width="180" alt="AI Chatbot">
-  <img src="images/ai-matching.png" width="180" alt="AI Matching">
-  <img src="images/reports.png" width="180" alt="Report>
+  <img src="images/ai-chatbot.png" width="180" alt="AI Chatbot Screen">
+  <img src="images/ai-matching.png" width="180" alt="AI Matching Screen">
+  <img src="images/voice-search.png" width="180" alt="Voice Search Screen">
 </p>
-<br>
+
 ---
-
-
-
 
 ### App Support
 
 For application-related assistance, please refer to the project repository:
 
 [CampusFind – GitHub Repository](https://github.com/ST10448358/CampusFind.git)
+
+---
 
 ### Privacy and Data
 
