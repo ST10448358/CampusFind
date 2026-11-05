@@ -1,7 +1,7 @@
 ## Google Play Store Listing
 
 <p align="center">
-  <img src="docs/app-icon.png" width="120" alt="CampusFind App Icon">
+  <img src="images/app-icon.png" width="120" alt="CampusFind App Icon">
 </p>
 
 <h2 align="center">CampusFind</h2>
@@ -75,15 +75,15 @@ The language options help make the application accessible to students from diffe
 ### App Screenshots
 
 <p align="center">
-  <img src="docs/images/home-screen.png" width="180" alt="CampusFind Home Screen">
-  <img src="docs/images/lost-items.png" width="180" alt="Lost Items">
+  <img src="images/home-screen.png" width="180" alt="CampusFind Home Screen">
+  <img src="images/lost-items.png" width="180" alt="Lost Items">
   <img src="docs/images/found-items.png" width="180" alt="Found Items">
 </p>
 
 <p align="center">
-  <img src="docs/images/ai-chatbot.png" width="180" alt="AI Chatbot">
-  <img src="docs/images/ai-matching.png" width="180" alt="AI Matching">
-  <img src="docs/images/reports.png" width="180" alt="Report>
+  <img src="images/ai-chatbot.png" width="180" alt="AI Chatbot">
+  <img src="images/ai-matching.png" width="180" alt="AI Matching">
+  <img src="images/reports.png" width="180" alt="Report>
 </p>
 
 ---
