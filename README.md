@@ -106,20 +106,7 @@ GitHub also supports project organisation and collaboration by providing a share
 
 ## GitHub Actions
 
-GitHub Actions is used to support the continuous integration process for the CampusFind application. A workflow has been configured to run when code is pushed to the repository and when pull requests are created or updated, according to the workflow configuration.
-
-The GitHub Actions workflow is intended to provide an automated environment for validating changes to the application. This allows the development team to integrate automated development checks into the version control process.
-
-The current workflow triggers include:
-
-- **Push:** The workflow runs when changes are pushed to the repository.
-- **Pull Request:** The workflow runs when a pull request triggers the configured workflow conditions.
-
-Android instrumented tests are used to test application functionality on an Android device or emulator. These tests support the verification of application behaviour and help identify potential issues during development.
-
-The specific build and testing steps performed by GitHub Actions depend on the configured workflow file. Additional workflow steps can be added as the project develops.
-
-
+We set up GitHub Actions to automatically build and test my Android app every time we push changes. The earliest workflows passed successfully, such as Workflow #1 ("Add CI workflow for CampusFind Android project"), Workflow #2 ("Add report search filter and unit tests"), and Workflow #3 ("Add registration input validator and unit tests"), confirming that the core password validation, search filtering, and registration logic worked as expected. Later workflows, like #4, #13, #35, #36, #37, and #38, failed because they included intentionally incorrect tests—such as the "password validator failure demonstration test," the "intentional failing registration test," and the additional failing tests for the search filter. For example, one test expected two search results when only one was returned, and another expected a successful registration even though the passwords did not match. we kept these failing tests deliberately to demonstrate that GitHub Actions correctly detects, reports, and highlights incorrect expected results, proving the CI pipeline works as intended to catch bug
 
 
 
