@@ -9,6 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
+/**
+ * Production implementation of [UserRepository] utilizing Firebase Authentication and Cloud Firestore.
+ * 
+ * Manages authentication states, user account creation, profile persistence, Google Single Sign-On,
+ * role management (Student vs Admin), and auto-provisioning of administrator accounts.
+ */
 class FirebaseUserRepository : UserRepository {
     private val auth: FirebaseAuth? = try { FirebaseAuth.getInstance() } catch (_: Throwable) { null }
     private val firestore: FirebaseFirestore? = try { FirebaseFirestore.getInstance() } catch (_: Throwable) { null }
@@ -31,6 +37,9 @@ class FirebaseUserRepository : UserRepository {
         } catch (_: Throwable) {}
     }
 
+    /**
+     * Listens to user profile changes in Firestore for the active authenticated user ID.
+     */
     private fun fetchUserData(uid: String) {
         try {
             firestore?.collection("users")?.document(uid)?.addSnapshotListener { snapshot, error ->
@@ -43,6 +52,10 @@ class FirebaseUserRepository : UserRepository {
         } catch (_: Throwable) {}
     }
 
+    /**
+     * Authenticates a user with email and password. Includes automatic fallback provisioning
+     * for default administrator credentials (`admin@campusfind.ac.za`).
+     */
     override suspend fun login(email: String, password: String): Result<User> {
         return try {
             val dbAuth = auth ?: throw Exception("Firebase Auth unavailable")
@@ -51,6 +64,7 @@ class FirebaseUserRepository : UserRepository {
             val authResult = try {
                 dbAuth.signInWithEmailAndPassword(email, password).await()
             } catch (e: Exception) {
+                // Auto-create admin account if attempting login with standard admin credentials
                 if (email.equals("admin@campusfind.ac.za", ignoreCase = true) && password == "AdminPass123!") {
                     val createResult = dbAuth.createUserWithEmailAndPassword(email, password).await()
                     val newAdminUser = User(
@@ -103,6 +117,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Registers a new student or admin account in Firebase Authentication and stores the profile in Firestore.
+     */
     override suspend fun register(
         firstName: String,
         lastName: String,
@@ -142,6 +159,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Logs in or registers a user via Google Single Sign-On credentials.
+     */
     override suspend fun loginWithGoogle(
         email: String,
         firstName: String,
@@ -217,6 +237,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Checks whether an authenticated user session is active.
+     */
     override suspend fun checkAuthentication(): Result<User> {
         return try {
             val firebaseUser = auth?.currentUser
@@ -247,6 +270,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Checks if a user email is registered in Firestore.
+     */
     override suspend fun isUserRegistered(email: String): Boolean {
         val cleanEmail = email.trim().lowercase()
         if (_allUsers.value.any { it.email.trim().equals(cleanEmail, ignoreCase = true) }) {
@@ -264,6 +290,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Signs out the current user session.
+     */
     override suspend fun logout() {
         try {
             auth?.signOut()
@@ -271,6 +300,9 @@ class FirebaseUserRepository : UserRepository {
         _currentUser.value = null
     }
 
+    /**
+     * Updates an existing user profile document in Firestore.
+     */
     override suspend fun updateUser(user: User): Result<Unit> {
         return try {
             val db = firestore ?: throw Exception("Firebase Firestore unavailable")
@@ -284,6 +316,9 @@ class FirebaseUserRepository : UserRepository {
         }
     }
 
+    /**
+     * Returns a state flow emitting all registered user profiles (for Admin management).
+     */
     override fun getAllUsers(): StateFlow<List<User>> {
         try {
             firestore?.collection("users")
