@@ -1,7 +1,7 @@
 ## Google Play Store Listing
 
 <p align="center">
-  <img src="docs/images/app-icon.png" width="120" alt="CampusFind App Icon">
+  <img src="docs/app-icon.png" width="120" alt="CampusFind App Icon">
 </p>
 
 <h2 align="center">CampusFind</h2>
