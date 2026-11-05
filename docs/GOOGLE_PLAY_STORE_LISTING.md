@@ -83,7 +83,7 @@ The language options help make the application accessible to students from diffe
 <p align="center">
   <img src="docs/images/ai-chatbot.png" width="180" alt="AI Chatbot">
   <img src="docs/images/ai-matching.png" width="180" alt="AI Matching">
-  <img src="docs/images/voice-search.png" width="180" alt="Voice Search">
+  <img src="docs/images/reports.png" width="180" alt="Report>
 </p>
 
 ---
