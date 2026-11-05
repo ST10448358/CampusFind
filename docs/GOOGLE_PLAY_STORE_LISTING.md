@@ -77,13 +77,13 @@ The language options help make the application accessible to students from diffe
 <p align="center">
   <img src="images/home-screen.png" width="180" alt="CampusFind Home Screen">
   <img src="images/lost-items.png" width="180" alt="Lost Items Screen">
-  <img src="images/found-items.png" width="180" alt="Found Items Screen">
+  <img src="images/map.png" width="180" alt="Map">
 </p>
 
 <p align="center">
   <img src="images/ai-chatbot.png" width="180" alt="AI Chatbot Screen">
   <img src="images/ai-matching.png" width="180" alt="AI Matching Screen">
-  <img src="images/voice-search.png" width="180" alt="Voice Search Screen">
+  <img src="images/reports.png" width="180" alt="Voice Search Screen">
 </p>
 
 ---
