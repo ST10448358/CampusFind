@@ -1,4 +1,3 @@
-
 package com.segotlo.campusfindapp.data
 
 import org.junit.Assert.assertEquals
@@ -8,7 +7,7 @@ import java.util.Date
 class ReportSearchFilterFailureDemoTest {
 
     @Test
-    fun searchShouldFindPassportButDemonstratesIncorrectExpectation() {
+    fun searchShouldFindPassportWithCorrectExpectation() {
         val report = Report(
             userId = "test-user",
             userDisplayName = "Test Student",
@@ -25,7 +24,7 @@ class ReportSearchFilterFailureDemoTest {
 
         val result = ReportSearchFilter.filter(listOf(report), "Passport")
 
-        // Deliberately incorrect: no report matches "Passport".
-        assertEquals(1, result.size)
+        // Correct expectation: no report matches "Passport".
+        assertEquals(0, result.size)
     }
 }

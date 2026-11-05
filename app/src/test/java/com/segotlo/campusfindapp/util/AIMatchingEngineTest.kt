@@ -182,7 +182,7 @@ import java.util.Date
         }
 
         @Test
-        fun intentionallyIncorrectConfidenceTest() {
+        fun matchingReportsProduceExpectedConfidence() {
             val lost = createReport(
                 ReportType.LOST,
                 "Samsung Phone"
@@ -198,8 +198,7 @@ import java.util.Date
                 listOf(found)
             )
 
-            // Intentionally incorrect expectation for failure demonstration.
-            assertEquals(10, result!!.confidenceScore)
+            assertEquals(90, result!!.confidenceScore)
         }
     }
 
